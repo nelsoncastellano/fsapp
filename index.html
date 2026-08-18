@@ -11,94 +11,56 @@
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
   :root{
-    --bg:#050505;
-    --accent:#ffffff;
-    --text:#f3eeff;
-    --line:rgba(255, 255, 255, 0.15);
+    --bg:#050505; --accent:#ffffff; --text:#f3eeff; --line:rgba(255, 255, 255, 0.15);
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:'Inter',sans-serif;
-    color:var(--text);
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
-    background-color: var(--bg);
-    margin: 0;
-    width: 100%;
-    cursor: none;
-  }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{ font-family:'Inter',sans-serif; color:var(--text); overflow-x:hidden; -webkit-font-smoothing:antialiased; background-color: var(--bg); margin: 0; width: 100%; cursor: none; }
   .font-display{font-family:'Fraunces',serif;font-optical-sizing:auto;letter-spacing:-0.02em}
   .font-mono{font-family:'JetBrains Mono',monospace}
-  
   .bg-atmosphere{ background-color: var(--bg); position: relative; min-height: 100vh; }
   .bg-atmosphere::before { content: ''; position: absolute; inset: 0; background-image: url('https://z-cdn-media.chatglm.cn/files/5caabcd3-36f7-459f-801f-e53b130c8f64.jpg?auth_key=1886903085-2425b2af76a74bfc8cfc587598efa9ac-0-6a3c4cd7b8f7bbdd872cf1e78a5baace'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.15; z-index: -2; }
-  
   .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); will-change: transform; }
   .cursor-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; mix-blend-mode: difference; transition: width 0.3s, height 0.3s; }
   .cursor-ring { width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; z-index: 9998; opacity: 0.6; transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), opacity 0.3s, border-color 0.3s; }
   .cursor-ring.active { width: 60px; height: 60px; opacity: 1; border-color: rgba(255,255,255,0.8); }
   @media (hover:none){.cursor-dot,.cursor-ring{display:none}}
-  
   .btn-primary{ background:linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%); color:#0c0717;font-weight:600; transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo); position:relative;overflow:hidden; }
   .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 20px 50px -10px rgba(255, 255, 255, 0.4); }
   .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); transition: none; }
   .btn-primary:hover::before { animation: shine 0.8s var(--ease-out-expo); }
   @keyframes shine { to { left: 100%; } }
-  
   .btn-ghost{ border:1px solid var(--line); background:rgba(0, 0, 0, 0.4); transition: border-color 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo); }
   .btn-ghost:hover{ border-color:var(--accent); background:rgba(255, 255, 255, 0.05); transform:translateY(-2px); }
-  
   .card-glass{ background:linear-gradient(135deg,rgba(10, 10, 10, 0.7) 0%,rgba(20, 20, 20, 0.5) 100%); border:1px solid var(--line); transition: transform 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo); position:relative;overflow:hidden; will-change: transform; }
   .card-glass:hover{ border-color:rgba(255, 255, 255, 0.4); transform:translateY(-8px); box-shadow:0 30px 60px -20px rgba(0, 0, 0, 0.8); }
   .card-glow::before{ content:'';position:absolute;width:200px;height:200px; background:radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%); top:-100px;left:-100px;opacity:0; transition: opacity 0.8s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); pointer-events:none; }
   .card-glow:hover::before{ opacity:1; transform: translate(50px, 50px); }
-  
   .text-gradient-2{ background:linear-gradient(135deg, #ffffff 0%, #b0b0b0 50%, #ffffff 100%); background-size: 200% auto; -webkit-background-clip:text;background-clip:text;color:transparent; animation: shimmerText 4s linear infinite; }
   @keyframes shimmerText { to { background-position: 200% center; } }
-  
   .deco-line{ width:60px;height:1px;background:linear-gradient(90deg, var(--accent), transparent); }
-  
   .reveal{ opacity:0; transform:translateY(40px); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: transform, opacity; }
   .reveal.in{opacity:1;transform:translateY(0)}
-  .reveal-delay-1{transition-delay:.15s}
-  .reveal-delay-2{transition-delay:.3s}
-  .reveal-delay-3{transition-delay:.45s}
-  
+  .reveal-delay-1{transition-delay:.15s} .reveal-delay-2{transition-delay:.3s} .reveal-delay-3{transition-delay:.45s}
   .hero-title{ font-family:'JetBrains Mono', monospace; font-size:clamp(1.8rem, 5.5vw, 4.5rem); line-height: 1.3; letter-spacing: -0.02em; font-weight: 500; }
   .hero-title span { display: block; opacity: 0; transform: translateY(40px); animation: titleFadeUp 1.2s var(--ease-out-expo) forwards; }
-  .hero-title span:nth-child(1) { animation-delay: 0.3s; }
-  .hero-title span:nth-child(2) { animation-delay: 0.5s; }
+  .hero-title span:nth-child(1) { animation-delay: 0.3s; } .hero-title span:nth-child(2) { animation-delay: 0.5s; }
   @keyframes titleFadeUp { to { opacity: 1; transform: translateY(0); } }
-  
-  .float-anim { animation: float 6s ease-in-out infinite; }
-  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  
+  .float-anim { animation: float 6s ease-in-out infinite; } @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   .section-num{ font-family:'Fraunces',serif; font-size:0.85rem; letter-spacing:0.3em; color:var(--accent); }
   .input-field{ background:rgba(255,255,255,0.03); border:1px solid var(--line); color:var(--text); transition: border-color 0.3s var(--ease-out-expo), background 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo); }
   .input-field:focus{ outline:none; border-color:var(--accent); background:rgba(255, 255, 255, 0.05); box-shadow:0 0 0 4px rgba(255, 255, 255, 0.1); }
-  
   .nav-solid{ background:rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom:1px solid var(--line); position: sticky; top: 0; z-index: 50; width: 100%; }
   .social-icon{ width:40px;height:40px; display:flex;align-items:center;justify-content:center; border:1px solid var(--line);border-radius:50%; transition: transform 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-expo); background: rgba(0, 0, 0, 0.4); }
   .social-icon:hover{ border-color:var(--accent); background:rgba(255, 255, 255, 0.1); transform:translateY(-4px) rotate(-8deg); }
-  .nav-link{position:relative}
-  .nav-link::after{ content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px; background:var(--accent);transition:width 0.4s var(--ease-out-expo); }
-  .nav-link:hover::after{width:100%}
-  
+  .nav-link{position:relative} .nav-link::after{ content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px; background:var(--accent);transition:width 0.4s var(--ease-out-expo); } .nav-link:hover::after{width:100%}
   .toast{ position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px); background:var(--accent);color:#0c0717;padding:12px 24px;border-radius:100px; font-weight:600;z-index:9999;transition:transform 0.5s var(--ease-out-expo); box-shadow:0 20px 40px -10px rgba(255, 255, 255, 0.5); }
   .toast.show{transform:translateX(-50%) translateY(0)}
-  
-  ::-webkit-scrollbar{width:8px}
-  ::-webkit-scrollbar-track{background:var(--bg)}
-  ::-webkit-scrollbar-thumb{background:#ffffff;border-radius:4px}
-  
+  ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-track{background:var(--bg)} ::-webkit-scrollbar-thumb{background:#ffffff;border-radius:4px}
   .star{ position:absolute;width:2px;height:2px;background:#fff; border-radius:50%;opacity:0;animation:twinkle 5s ease-in-out infinite; }
   @keyframes twinkle{ 0%,100%{opacity:0} 50%{opacity:0.8} }
   ::selection{background:var(--accent);color:#0c0717}
-  .img-hover{overflow:hidden}
-  .img-hover img{transition:transform 1.2s var(--ease-out-expo); will-change: transform;}
-  .img-hover:hover img{transform:scale(1.08)}
+  .img-hover{overflow:hidden} .img-hover img{transition:transform 1.2s var(--ease-out-expo); will-change: transform;} .img-hover:hover img{transform:scale(1.08)}
   .num-badge{ font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
   .svg-icon { fill: #ffffff; width: 20px; height: 20px; }
 </style>
@@ -288,7 +250,7 @@
       <div class="reveal reveal-delay-1"><div class="font-display text-4xl mb-2 num-badge text-white">02</div><h3 class="font-display text-sm mb-1">Escribir</h3><p class="text-[10px] text-white/60">Borradores sin filtro. Decirlo feo antes de decirlo bonito.</p></div>
       <div class="reveal reveal-delay-2"><div class="font-display text-4xl mb-2 num-badge text-white">03</div><h3 class="font-display text-sm mb-1">Diseñar</h3><p class="text-[10px] text-white/60">Tipografía, color, ritmo. El contenedor importa tanto como el contenido.</p></div>
       <div class="reveal reveal-delay-3"><div class="font-display text-4xl mb-2 num-badge text-white">04</div><h3 class="font-display text-sm mb-1">Lanzar</h3><p class="text-[10px] text-white/60">Publicar sin miedo. Las frases perfectas no existen, las publicadas sí.</p></div>
-      <div class="reveal" style="transition-delay:.6s"><div class="font-display text-4xl mb-2 num-badge text-white">05</div><h3 class="font-display text-sm mb-1">Escuchar</h3><p class="text-[10px] text-white/60">Volver al paso 1 con lo que aprendí. El ciclo nunca termina.</p></div>
+      <div class="reveal" style="transition-delay:.6s"><div class="font-display text-4xl mb-2 num-badge text-white">05</div><h3 class="font-display text-sm mb-1">Escuchar</h3><p class="text-[10px] text-white/60">Volver al paso 1 with lo que aprendí. El ciclo nunca termina.</p></div>
     </div>
   </div>
 </section>
@@ -308,10 +270,11 @@
       </div>
       
       <div class="lg:col-span-7 reveal reveal-delay-1">
-        <form id="contactForm" class="card-glass rounded-xl p-5 lg:p-6 space-y-4">
+        <form id="contactForm" action="https://formsubmit.co/fsapp.074@gmail.com" method="POST" class="card-glass rounded-xl p-5 lg:p-6 space-y-4">
           <input type="hidden" name="_subject" value="¡Nuevo mensaje desde FsApp!">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://nelsoncastellano.github.io/fsapp/">
           
           <div class="grid md:grid-cols-2 gap-4">
             <div>
@@ -412,56 +375,41 @@
     starField.appendChild(star);
   }
   
-  // === TIKTOK API: SCRAPEO DIRECTO + FALLBACK A TIKWM ===
+  // === TIKTOK API CORREGIDA ===
   function formatNumber(num) {
     if (num >= 1000000) return (num / 1000000).toFixed(1).replace('.0', '') + 'M';
     if (num >= 1000) return (num / 1000).toFixed(1).replace('.0', '') + 'K';
     return num.toString();
   }
 
-  async function fetchWithTimeout(url, options = {}, timeout = 8000) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-    try {
-      const response = await fetch(url, { ...options, signal: controller.signal });
-      clearTimeout(timeoutId);
-      return response;
-    } catch (error) {
-      clearTimeout(timeoutId);
-      throw error;
-    }
-  }
-
   async function actualizarStatsReales(username = 'frases_hishida') {
     const target = username.replace('@', '');
-    const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
-    const tiktokUrl = `https://www.tiktok.com/@${encodeURIComponent(target)}`;
     let success = false;
 
-    // INTENTO 1: Scrapear TikTok directamente (100% en tiempo real) vía AllOrigins
+    // 1. Cloudflare Worker (Tu servidor personal, evita el bloqueo de GitHub Pages)
     try {
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tiktokUrl)}`;
-      const response = await fetchWithTimeout(proxyUrl, {}, 8000);
+      const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?user=${target}`;
+      const response = await fetch(workerUrl);
       const html = await response.text();
       
-      const jsonMatch = html.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" type="application\/json">(.*?)<\/script>/s);
-      if (jsonMatch && jsonMatch[1]) {
-        const data = JSON.parse(jsonMatch[1]);
-        const userInfo = data?.__DEFAULT_SCOPE__?.['web.detail.user-detail']?.userInfo;
-        if (userInfo && userInfo.stats) {
-          document.getElementById("followers-count").innerText = formatNumber(userInfo.stats.followerCount || 0);
-          document.getElementById("likes-count").innerText = formatNumber(userInfo.stats.heart || 0);
-          document.getElementById("videos-count").innerText = userInfo.stats.videoCount || 0;
-          success = true;
-        }
+      const followerMatch = html.match(/"followerCount":(\d+)/);
+      const heartMatch = html.match(/"heartCount":(\d+)/);
+      const videoMatch = html.match(/"videoCount":(\d+)/);
+      
+      if (followerMatch && followerMatch[1]) {
+        document.getElementById("followers-count").innerText = formatNumber(parseInt(followerMatch[1]));
+        if (heartMatch) document.getElementById("likes-count").innerText = formatNumber(parseInt(heartMatch[1]));
+        if (videoMatch) document.getElementById("videos-count").innerText = videoMatch[1];
+        success = true;
       }
-    } catch (e) {}
+    } catch (error) {}
 
     if (success) return;
 
-    // INTENTO 2: TikWM Directo
+    // 2. TikWM API Directo
     try {
-      const response = await fetchWithTimeout(tikwmUrl, {}, 6000);
+      const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
+      const response = await fetch(tikwmUrl);
       const data = await response.json();
       if (data.code === 0 && data.data && data.data.stats) {
         document.getElementById("followers-count").innerText = formatNumber(data.data.stats.followerCount || 0);
@@ -469,14 +417,15 @@
         document.getElementById("videos-count").innerText = data.data.stats.videoCount || 0;
         success = true;
       }
-    } catch (e) {}
+    } catch (error) {}
 
     if (success) return;
 
-    // INTENTO 3: TikWM vía Codetabs
+    // 3. AllOrigins
     try {
-      const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(tikwmUrl)}`;
-      const response = await fetchWithTimeout(proxyUrl, {}, 6000);
+      const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tikwmUrl)}`;
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.code === 0 && data.data && data.data.stats) {
         document.getElementById("followers-count").innerText = formatNumber(data.data.stats.followerCount || 0);
@@ -484,58 +433,18 @@
         document.getElementById("videos-count").innerText = data.data.stats.videoCount || 0;
         success = true;
       }
-    } catch (e) {}
+    } catch (error) {}
 
-    // FALLBACK FINAL
+    // Si todo falla, mostramos "..." para no romper el diseño
     if (!success) {
-      document.getElementById("followers-count").innerText = "19.0K";
-      document.getElementById("likes-count").innerText = "452.1K";
-      document.getElementById("videos-count").innerText = "132";
+      document.getElementById("followers-count").innerText = "...";
+      document.getElementById("likes-count").innerText = "...";
+      document.getElementById("videos-count").innerText = "...";
     }
   }
 
   actualizarStatsReales('frases_hishida');
   setInterval(() => actualizarStatsReales('frases_hishida'), 60000);
-  
-  // === FORMULARIO DE CONTACTO CON FORMSUBMIT ===
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const toast = document.getElementById('toast');
-    const submitBtn = document.getElementById('submitBtn');
-    const originalText = submitBtn.innerHTML;
-    
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span>Enviando...</span>';
-    toast.textContent = 'Enviando mensaje...';
-    toast.classList.add('show');
-
-    const formData = new FormData(this);
-    fetch('https://formsubmit.co/ajax/fsapp.074@gmail.com', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.success === "true" || data.message === "Form submitted successfully") {
-        toast.textContent = '¡Mensaje enviado con éxito!';
-        this.reset();
-      } else {
-        toast.textContent = 'Hubo un error. Intenta de nuevo.';
-      }
-    })
-    .catch(error => {
-      toast.textContent = 'Error de conexión. Intenta más tarde.';
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
-      setTimeout(() => {
-        toast.classList.remove('show');
-        toast.textContent = 'Copiado al portapapeles';
-      }, 4000);
-    });
-  });
 </script>
 </body>
 </html>
