@@ -1,1418 +1,640 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FsApp — Frases de un diario de vida</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-      :root {
-        --bg: #050505;
-        --accent: #ffffff;
-        --text: #f3eeff;
-        --line: rgba(255, 255, 255, 0.15);
-        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        font-family: "Inter", sans-serif;
-        color: var(--text);
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-        background-color: var(--bg);
-        margin: 0;
-        width: 100%;
-        cursor: none;
-      }
-      .font-display {
-        font-family: "Fraunces", serif;
-        font-optical-sizing: auto;
-        letter-spacing: -0.02em;
-      }
-      .font-mono {
-        font-family: "JetBrains Mono", monospace;
-      }
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FsApp — Frases de un diario de vida</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  :root{
+    --bg:#050505;
+    --accent:#ffffff;
+    --text:#f3eeff;
+    --line:rgba(255, 255, 255, 0.15);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    background-color: var(--bg);
+    margin: 0;
+    width: 100%;
+    cursor: none;
+  }
+  .font-display{font-family:'Fraunces',serif;font-optical-sizing:auto;letter-spacing:-0.02em}
+  .font-mono{font-family:'JetBrains Mono',monospace}
+  
+  .bg-atmosphere{
+    background-color: var(--bg);
+    position: relative;
+    min-height: 100vh;
+  }
+  .bg-atmosphere::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('https://z-cdn-media.chatglm.cn/files/5caabcd3-36f7-459f-801f-e53b130c8f64.jpg?auth_key=1886903085-2425b2af76a74bfc8cfc587598efa9ac-0-6a3c4cd7b8f7bbdd872cf1e78a5baace');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15; 
+    z-index: -2;
+  }
+  
+  .cursor-dot, .cursor-ring {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%); will-change: transform;
+  }
+  .cursor-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; mix-blend-mode: difference; transition: width 0.3s, height 0.3s; }
+  .cursor-ring { width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; z-index: 9998; opacity: 0.6; transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), opacity 0.3s, border-color 0.3s; }
+  .cursor-ring.active { width: 60px; height: 60px; opacity: 1; border-color: rgba(255,255,255,0.8); }
+  @media (hover:none){.cursor-dot,.cursor-ring{display:none}}
+  
+  .btn-primary{
+    background:linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    color:#0c0717;font-weight:600;
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+    position:relative;overflow:hidden;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 20px 50px -10px rgba(255, 255, 255, 0.4); }
+  .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); transition: none; }
+  .btn-primary:hover::before { animation: shine 0.8s var(--ease-out-expo); }
+  @keyframes shine { to { left: 100%; } }
+  
+  .btn-ghost{ border:1px solid var(--line); background:rgba(0, 0, 0, 0.4); transition: border-color 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo); }
+  .btn-ghost:hover{ border-color:var(--accent); background:rgba(255, 255, 255, 0.05); transform:translateY(-2px); }
+  
+  .card-glass{ background:linear-gradient(135deg,rgba(10, 10, 10, 0.7) 0%,rgba(20, 20, 20, 0.5) 100%); border:1px solid var(--line); transition: transform 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo); position:relative;overflow:hidden; will-change: transform; }
+  .card-glass:hover{ border-color:rgba(255, 255, 255, 0.4); transform:translateY(-8px); box-shadow:0 30px 60px -20px rgba(0, 0, 0, 0.8); }
+  .card-glow::before{ content:'';position:absolute;width:200px;height:200px; background:radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%); top:-100px;left:-100px;opacity:0; transition: opacity 0.8s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); pointer-events:none; }
+  .card-glow:hover::before{ opacity:1; transform: translate(50px, 50px); }
+  
+  .text-gradient-2{ background:linear-gradient(135deg, #ffffff 0%, #b0b0b0 50%, #ffffff 100%); background-size: 200% auto; -webkit-background-clip:text;background-clip:text;color:transparent; animation: shimmerText 4s linear infinite; }
+  @keyframes shimmerText { to { background-position: 200% center; } }
+  
+  .deco-line{ width:60px;height:1px;background:linear-gradient(90deg, var(--accent), transparent); }
+  
+  .reveal{ opacity:0; transform:translateY(40px); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: transform, opacity; }
+  .reveal.in{opacity:1;transform:translateY(0)}
+  .reveal-delay-1{transition-delay:.15s}
+  .reveal-delay-2{transition-delay:.3s}
+  .reveal-delay-3{transition-delay:.45s}
+  
+  .hero-title{ font-family:'JetBrains Mono', monospace; font-size:clamp(1.8rem, 5.5vw, 4.5rem); line-height: 1.3; letter-spacing: -0.02em; font-weight: 500; }
+  .hero-title span { display: block; opacity: 0; transform: translateY(40px); animation: titleFadeUp 1.2s var(--ease-out-expo) forwards; }
+  .hero-title span:nth-child(1) { animation-delay: 0.3s; }
+  .hero-title span:nth-child(2) { animation-delay: 0.5s; }
+  @keyframes titleFadeUp { to { opacity: 1; transform: translateY(0); } }
+  
+  .float-anim { animation: float 6s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  
+  .section-num{ font-family:'Fraunces',serif; font-size:0.85rem; letter-spacing:0.3em; color:var(--accent); }
+  .input-field{ background:rgba(255,255,255,0.03); border:1px solid var(--line); color:var(--text); transition: border-color 0.3s var(--ease-out-expo), background 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo); }
+  .input-field:focus{ outline:none; border-color:var(--accent); background:rgba(255, 255, 255, 0.05); box-shadow:0 0 0 4px rgba(255, 255, 255, 0.1); }
+  
+  .nav-solid{ background:rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom:1px solid var(--line); position: sticky; top: 0; z-index: 50; width: 100%; }
+  .social-icon{ width:40px;height:40px; display:flex;align-items:center;justify-content:center; border:1px solid var(--line);border-radius:50%; transition: transform 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-expo); background: rgba(0, 0, 0, 0.4); }
+  .social-icon:hover{ border-color:var(--accent); background:rgba(255, 255, 255, 0.1); transform:translateY(-4px) rotate(-8deg); }
+  .nav-link{position:relative}
+  .nav-link::after{ content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px; background:var(--accent);transition:width 0.4s var(--ease-out-expo); }
+  .nav-link:hover::after{width:100%}
+  
+  .toast{ position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px); background:var(--accent);color:#0c0717;padding:12px 24px;border-radius:100px; font-weight:600;z-index:9999;transition:transform 0.5s var(--ease-out-expo); box-shadow:0 20px 40px -10px rgba(255, 255, 255, 0.5); }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:#ffffff;border-radius:4px}
+  
+  .star{ position:absolute;width:2px;height:2px;background:#fff; border-radius:50%;opacity:0;animation:twinkle 5s ease-in-out infinite; }
+  @keyframes twinkle{ 0%,100%{opacity:0} 50%{opacity:0.8} }
+  ::selection{background:var(--accent);color:#0c0717}
+  .img-hover{overflow:hidden}
+  .img-hover img{transition:transform 1.2s var(--ease-out-expo); will-change: transform;}
+  .img-hover:hover img{transform:scale(1.08)}
+  .num-badge{ font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
+  .svg-icon { fill: #ffffff; width: 20px; height: 20px; }
+</style>
+</head>
+<body class="bg-atmosphere relative">
 
-      .bg-atmosphere {
-        background-color: var(--bg);
-        position: relative;
-        min-height: 100vh;
-      }
-      .bg-atmosphere::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("https://z-cdn-media.chatglm.cn/files/5caabcd3-36f7-459f-801f-e53b130c8f64.jpg?auth_key=1886903085-2425b2af76a74bfc8cfc587598efa9ac-0-6a3c4cd7b8f7bbdd872cf1e78a5baace");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: 0.15;
-        z-index: -2;
-      }
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="toast" id="toast">Copiado al portapapeles</div>
 
-      /* Cursor Fluido */
-      .cursor-dot,
-      .cursor-ring {
-        position: fixed;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        will-change: transform;
-      }
-      .cursor-dot {
-        width: 8px;
-        height: 8px;
-        background: var(--accent);
-        border-radius: 50%;
-        mix-blend-mode: difference;
-        transition:
-          width 0.3s,
-          height 0.3s;
-      }
-      .cursor-ring {
-        width: 36px;
-        height: 36px;
-        border: 1px solid var(--accent);
-        border-radius: 50%;
-        z-index: 9998;
-        opacity: 0.6;
-        transition:
-          width 0.3s var(--ease-out-expo),
-          height 0.3s var(--ease-out-expo),
-          opacity 0.3s,
-          border-color 0.3s;
-      }
-      .cursor-ring.active {
-        width: 60px;
-        height: 60px;
-        opacity: 1;
-        border-color: rgba(255, 255, 255, 0.8);
-      }
-      @media (hover: none) {
-        .cursor-dot,
-        .cursor-ring {
-          display: none;
-        }
-      }
-
-      /* Botones y Tarjetas Optimizados */
-      .btn-primary {
-        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-        color: #0c0717;
-        font-weight: 600;
-        transition:
-          transform 0.4s var(--ease-out-expo),
-          box-shadow 0.4s var(--ease-out-expo);
-        position: relative;
-        overflow: hidden;
-      }
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 50px -10px rgba(255, 255, 255, 0.4);
-      }
-      .btn-primary::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.8),
-          transparent
-        );
-        transition: none;
-      }
-      .btn-primary:hover::before {
-        animation: shine 0.8s var(--ease-out-expo);
-      }
-      @keyframes shine {
-        to {
-          left: 100%;
-        }
-      }
-
-      .btn-ghost {
-        border: 1px solid var(--line);
-        background: rgba(0, 0, 0, 0.4);
-        transition:
-          border-color 0.4s var(--ease-out-expo),
-          background 0.4s var(--ease-out-expo),
-          transform 0.4s var(--ease-out-expo);
-      }
-      .btn-ghost:hover {
-        border-color: var(--accent);
-        background: rgba(255, 255, 255, 0.05);
-        transform: translateY(-2px);
-      }
-
-      .card-glass {
-        background: linear-gradient(
-          135deg,
-          rgba(10, 10, 10, 0.7) 0%,
-          rgba(20, 20, 20, 0.5) 100%
-        );
-        border: 1px solid var(--line);
-        transition:
-          transform 0.4s var(--ease-out-expo),
-          border-color 0.4s var(--ease-out-expo),
-          box-shadow 0.4s var(--ease-out-expo);
-        position: relative;
-        overflow: hidden;
-        will-change: transform;
-      }
-      .card-glass:hover {
-        border-color: rgba(255, 255, 255, 0.4);
-        transform: translateY(-8px);
-        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8);
-      }
-      .card-glow::before {
-        content: "";
-        position: absolute;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.2) 0%,
-          transparent 70%
-        );
-        top: -100px;
-        left: -100px;
-        opacity: 0;
-        transition:
-          opacity 0.8s var(--ease-out-expo),
-          transform 1.2s var(--ease-out-expo);
-        pointer-events: none;
-      }
-      .card-glow:hover::before {
-        opacity: 1;
-        transform: translate(50px, 50px);
-      }
-
-      .text-gradient-2 {
-        background: linear-gradient(
-          135deg,
-          #ffffff 0%,
-          #b0b0b0 50%,
-          #ffffff 100%
-        );
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        animation: shimmerText 4s linear infinite;
-      }
-      @keyframes shimmerText {
-        to {
-          background-position: 200% center;
-        }
-      }
-
-      .deco-line {
-        width: 60px;
-        height: 1px;
-        background: linear-gradient(90deg, var(--accent), transparent);
-      }
-
-      /* Animaciones de Revelado Fluidas */
-      .reveal {
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 1.2s var(--ease-out-expo),
-          transform 1.2s var(--ease-out-expo);
-        will-change: transform, opacity;
-      }
-      .reveal.in {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .reveal-delay-1 {
-        transition-delay: 0.15s;
-      }
-      .reveal-delay-2 {
-        transition-delay: 0.3s;
-      }
-      .reveal-delay-3 {
-        transition-delay: 0.45s;
-      }
-
-      .hero-title {
-        font-family: "JetBrains Mono", monospace;
-        font-size: clamp(1.8rem, 5.5vw, 4.5rem);
-        line-height: 1.3;
-        letter-spacing: -0.02em;
-        font-weight: 500;
-      }
-      .hero-title span {
-        display: block;
-        opacity: 0;
-        transform: translateY(40px);
-        animation: titleFadeUp 1.2s var(--ease-out-expo) forwards;
-      }
-      .hero-title span:nth-child(1) {
-        animation-delay: 0.3s;
-      }
-      .hero-title span:nth-child(2) {
-        animation-delay: 0.5s;
-      }
-      @keyframes titleFadeUp {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .float-anim {
-        animation: float 6s ease-in-out infinite;
-      }
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-      }
-
-      .section-num {
-        font-family: "Fraunces", serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.3em;
-        color: var(--accent);
-      }
-
-      .input-field {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--line);
-        color: var(--text);
-        transition:
-          border-color 0.3s var(--ease-out-expo),
-          background 0.3s var(--ease-out-expo),
-          box-shadow 0.3s var(--ease-out-expo);
-      }
-      .input-field:focus {
-        outline: none;
-        border-color: var(--accent);
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
-      }
-
-      .nav-solid {
-        background: rgba(5, 5, 5, 0.85);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--line);
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        width: 100%;
-      }
-
-      .social-icon {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        transition:
-          transform 0.4s var(--ease-out-expo),
-          border-color 0.4s var(--ease-out-expo),
-          background 0.4s var(--ease-out-expo);
-        background: rgba(0, 0, 0, 0.4);
-      }
-      .social-icon:hover {
-        border-color: var(--accent);
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-4px) rotate(-8deg);
-      }
-
-      .nav-link {
-        position: relative;
-      }
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--accent);
-        transition: width 0.4s var(--ease-out-expo);
-      }
-      .nav-link:hover::after {
-        width: 100%;
-      }
-
-      .toast {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: var(--accent);
-        color: #0c0717;
-        padding: 12px 24px;
-        border-radius: 100px;
-        font-weight: 600;
-        z-index: 9999;
-        transition: transform 0.5s var(--ease-out-expo);
-        box-shadow: 0 20px 40px -10px rgba(255, 255, 255, 0.5);
-      }
-      .toast.show {
-        transform: translateX(-50%) translateY(0);
-      }
-
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: var(--bg);
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #ffffff;
-        border-radius: 4px;
-      }
-
-      .star {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: #fff;
-        border-radius: 50%;
-        opacity: 0;
-        animation: twinkle 5s ease-in-out infinite;
-      }
-      @keyframes twinkle {
-        0%,
-        100% {
-          opacity: 0;
-        }
-        50% {
-          opacity: 0.8;
-        }
-      }
-
-      ::selection {
-        background: var(--accent);
-        color: #0c0717;
-      }
-
-      .img-hover {
-        overflow: hidden;
-      }
-      .img-hover img {
-        transition: transform 1.2s var(--ease-out-expo);
-        will-change: transform;
-      }
-      .img-hover:hover img {
-        transform: scale(1.08);
-      }
-
-      .num-badge {
-        font-family: "Fraunces", serif;
-        font-style: italic;
-        font-weight: 300;
-      }
-      .svg-icon {
-        fill: #ffffff;
-        width: 20px;
-        height: 20px;
-      }
-    </style>
-  </head>
-  <body class="bg-atmosphere relative">
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-    <div class="toast" id="toast">Copiado al portapapeles</div>
-
-    <nav class="nav-solid">
-      <div
-        class="max-w-[1400px] mx-auto px-6 lg:px-12 py-4 flex items-center justify-between"
-      >
-        <a href="#home" class="flex items-center gap-3 group">
-          <div
-            class="w-10 h-10 rounded-full overflow-hidden border border-white/10 flex items-center justify-center"
-          >
-            <img
-              src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb"
-              alt="Frases Hishida"
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <span class="font-display text-xl tracking-tight"
-            >FsApp<span style="color: var(--accent)">.</span></span
-          >
-        </a>
-        <div class="hidden md:flex items-center gap-10 text-sm">
-          <a href="#home" class="nav-link text-white/80 hover:text-white"
-            >Inicio</a
-          >
-          <a href="#apps" class="nav-link text-white/80 hover:text-white"
-            >Apps</a
-          >
-          <a href="#contact" class="nav-link text-white/80 hover:text-white"
-            >Contacto</a
-          >
-        </div>
-        <a
-          href="#contact"
-          class="btn-primary px-5 py-2.5 rounded-full text-sm hidden md:inline-flex items-center gap-2"
-        >
-          <span>Contáctame</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-        </a>
-        <button class="md:hidden text-white" id="menuBtn">
-          <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
+<nav class="nav-solid">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-4 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-3 group">
+      <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 flex items-center justify-center">
+        <img src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb" alt="Frases Hishida" class="w-full h-full object-cover">
       </div>
-      <div
-        id="mobileMenu"
-        class="md:hidden hidden border-t border-white/10 bg-[#050505]/95"
-      >
-        <div class="px-6 py-6 flex flex-col gap-4 text-sm">
-          <a href="#home" class="text-white/80">Inicio</a>
-          <a href="#apps" class="text-white/80">Apps</a>
-          <a href="#contact" class="text-white/80">Contacto</a>
-        </div>
+      <span class="font-display text-xl tracking-tight">FsApp<span style="color:var(--accent)">.</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-10 text-sm">
+      <a href="#home" class="nav-link text-white/80 hover:text-white">Inicio</a>
+      <a href="#apps" class="nav-link text-white/80 hover:text-white">Apps</a>
+      <a href="#contact" class="nav-link text-white/80 hover:text-white">Contacto</a>
+    </div>
+    <a href="#contact" class="btn-primary px-5 py-2.5 rounded-full text-sm hidden md:inline-flex items-center gap-2">
+      <span>Contáctame</span>
+      <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+    </a>
+    <button class="md:hidden text-white" id="menuBtn"><i data-lucide="menu" class="w-6 h-6"></i></button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-white/10 bg-[#050505]/95">
+    <div class="px-6 py-6 flex flex-col gap-4 text-sm">
+      <a href="#home" class="text-white/80">Inicio</a>
+      <a href="#apps" class="text-white/80">Apps</a>
+      <a href="#contact" class="text-white/80">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<section id="home" class="relative pt-20 pb-20 px-6 lg:px-12 overflow-hidden">
+  <div id="starField"></div>
+  <div class="max-w-[1400px] mx-auto relative z-10">
+    <div class="flex items-center justify-between mb-16 reveal">
+      <div class="flex items-center gap-3">
+        <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+        <span class="font-mono text-xs uppercase tracking-widest text-white/60">Disponible para colaboraciones</span>
       </div>
-    </nav>
+      <div class="font-mono text-xs uppercase tracking-widest text-white/40 hidden md:block">Portfolio · 2025</div>
+    </div>
 
-    <section
-      id="home"
-      class="relative pt-20 pb-20 px-6 lg:px-12 overflow-hidden"
-    >
-      <div id="starField"></div>
-
-      <div class="max-w-[1400px] mx-auto relative z-10">
-        <div class="flex items-center justify-between mb-16 reveal">
-          <div class="flex items-center gap-3">
-            <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-            <span
-              class="font-mono text-xs uppercase tracking-widest text-white/60"
-              >Disponible para colaboraciones</span
-            >
-          </div>
-          <div
-            class="font-mono text-xs uppercase tracking-widest text-white/40 hidden md:block"
-          >
-            Portfolio · 2025
-          </div>
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+      <div class="lg:col-span-8">
+        <div class="flex items-center gap-4 mb-8 reveal">
+          <div class="deco-line"></div>
+          <span class="section-num">01 — INICIO</span>
         </div>
-
-        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-          <div class="lg:col-span-8">
-            <div class="flex items-center gap-4 mb-8 reveal">
-              <div class="deco-line"></div>
-              <span class="section-num">01 — INICIO</span>
-            </div>
-
-            <h1 class="hero-title font-mono text-white">
-              <span>𝙵𝚛𝚊𝚜𝚎𝚜 𝚍𝚎 𝚞𝚗</span>
-              <span>𝚍𝚒𝚊𝚛𝚒𝚘 𝚍𝚎 𝚟𝚒𝚍𝚊.</span>
-            </h1>
-
-            <div class="mt-12 grid md:grid-cols-2 gap-8 reveal reveal-delay-1">
-              <p class="text-lg text-white/70 leading-relaxed max-w-md">
-                Soy <span class="text-white font-medium">Hishida</span>, un
-                creador de contenido de frases y desarrollador de software. Mis
-                frases son de motivación, reflexión, amor, psicología y factos.
-                También Diseño todo tipo de apps y experiencias digitales que
-                conectan contigo.
-              </p>
-              <div class="flex flex-wrap gap-3 items-start">
-                <a
-                  href="#apps"
-                  class="btn-primary px-7 py-4 rounded-full inline-flex items-center gap-2 text-sm"
-                >
-                  <span>Ver apps</span>
-                  <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-                </a>
-                <a
-                  href="#contact"
-                  class="btn-ghost px-7 py-4 rounded-full inline-flex items-center gap-2 text-sm"
-                >
-                  <span>Colaboremos</span>
-                  <i data-lucide="mail" class="w-4 h-4"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-4 reveal reveal-delay-2">
-            <div class="relative float-anim">
-              <div
-                class="aspect-[3/4] rounded-xl overflow-hidden img-hover relative"
-              >
-                <img
-                  src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb"
-                  alt="Frases Hishida"
-                  class="w-full h-full object-cover"
-                />
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"
-                ></div>
-                <div class="absolute bottom-6 left-6 right-6">
-                  <div
-                    class="font-mono text-xs uppercase tracking-widest text-white/60 mb-2"
-                  >
-                    Consejero · Desarrollador · Escritor
-                  </div>
-                  <div class="font-display text-xl mb-4">FRASES_HISHIDA</div>
-
-                  <a
-                    href="https://www.tiktok.com/@frases_hishida"
-                    target="_blank"
-                    class="block bg-black/40 border border-white/10 rounded-lg p-3 hover:bg-black/60 transition-colors mb-2"
-                  >
-                    <div class="flex items-center gap-1.5 mb-2">
-                      <div
-                        class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"
-                      ></div>
-                      <span
-                        class="text-[9px] font-mono uppercase tracking-widest text-white/60"
-                        >En vivo · TikTok</span
-                      >
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 text-center">
-                      <div>
-                        <div
-                          id="followers-count"
-                          class="font-mono text-base font-bold text-white"
-                        >
-                          ...
-                        </div>
-                        <div
-                          class="text-[9px] text-white/50 uppercase tracking-wider"
-                        >
-                          Seguidores
-                        </div>
-                      </div>
-                      <div class="border-x border-white/10">
-                        <div
-                          id="likes-count"
-                          class="font-mono text-base font-bold text-white"
-                        >
-                          ...
-                        </div>
-                        <div
-                          class="text-[9px] text-white/50 uppercase tracking-wider"
-                        >
-                          Me gusta
-                        </div>
-                      </div>
-                      <div>
-                        <div
-                          id="videos-count"
-                          class="font-mono text-base font-bold text-white"
-                        >
-                          ...
-                        </div>
-                        <div
-                          class="text-[9px] text-white/50 uppercase tracking-wider"
-                        >
-                          Videos
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://www.youtube.com/@Frases_hishida"
-                    target="_blank"
-                    class="flex items-center justify-center gap-2 bg-black/40 border border-white/10 rounded-lg p-2 hover:bg-black/60 transition-colors text-xs font-mono text-white/80 hover:text-white"
-                  >
-                    <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4">
-                      <path
-                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
-                      />
-                    </svg>
-                    <span>YouTube</span>
-                    <span class="text-white/50">· 500 subs</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Redes Sociales -->
-        <div class="mt-16 reveal reveal-delay-3">
-          <div
-            class="text-xs font-mono uppercase tracking-widest text-white/40 mb-4"
-          >
-            Conecta conmigo en
-          </div>
-          <div
-            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-[1100px]"
-          >
-            <a
-              href="https://play.google.com"
-              target="_blank"
-              class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"
-                >
-                  <svg viewBox="0 0 24 24" class="svg-icon">
-                    <path
-                      d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.302 2.303-8.636-8.635z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-display text-sm">Google Play</div>
-                  <div class="text-[10px] text-white/50">Próximamente</div>
-                </div>
-              </div>
-              <i
-                data-lucide="arrow-up-right"
-                class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"
-              ></i>
-            </a>
-
-            <a
-              href="https://www.tiktok.com/@frases_hishida"
-              target="_blank"
-              class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"
-                >
-                  <svg viewBox="0 0 24 24" class="svg-icon">
-                    <path
-                      d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.57 3.15-5.91 3.21-1.43.08-2.87-.29-4.09-1.06-2.03-1.27-3.35-3.58-3.29-6.03.05-2.41 1.45-4.7 3.41-5.77 1.21-.66 2.62-.95 4.03-.84v4.02c-.73-.25-1.54-.19-2.21.18-.63.35-1.11.96-1.31 1.65-.16.51-.11 1.06-.02 1.58.22 1.08 1.21 1.98 2.32 2.09 1.03.1 2.07-.44 2.6-1.31.2-.34.3-.73.36-1.12.06-1.79.02-3.57.03-5.36V.02h-.01z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-display text-sm">TikTok</div>
-                  <div class="text-[10px] text-white/50">19k seguidores</div>
-                </div>
-              </div>
-              <i
-                data-lucide="arrow-up-right"
-                class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"
-              ></i>
-            </a>
-
-            <a
-              href="https://www.youtube.com/@Frases_hishida"
-              target="_blank"
-              class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"
-                >
-                  <svg viewBox="0 0 24 24" class="svg-icon">
-                    <path
-                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-display text-sm">YouTube</div>
-                  <div class="text-[10px] text-white/50">500 suscriptores</div>
-                </div>
-              </div>
-              <i
-                data-lucide="arrow-up-right"
-                class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"
-              ></i>
-            </a>
-
-            <a
-              href="https://www.facebook.com/Hishida099"
-              target="_blank"
-              class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"
-                >
-                  <svg viewBox="0 0 24 24" class="svg-icon">
-                    <path
-                      d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-display text-sm">Facebook</div>
-                  <div class="text-[10px] text-white/50">Hishida099</div>
-                </div>
-              </div>
-              <i
-                data-lucide="arrow-up-right"
-                class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"
-              ></i>
-            </a>
-
-            <a
-              href="mailto:fsapp.074@gmail.com"
-              target="_blank"
-              class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"
-                >
-                  <i data-lucide="mail" class="w-5 h-5 text-white"></i>
-                </div>
-                <div>
-                  <div class="font-display text-sm">Correo</div>
-                  <div class="text-[10px] text-white/50">
-                    fsapp.074@gmail.com
-                  </div>
-                </div>
-              </div>
-              <i
-                data-lucide="arrow-up-right"
-                class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"
-              ></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="apps" class="py-24 px-6 lg:px-12 relative z-10">
-      <div class="max-w-[1400px] mx-auto">
-        <div class="grid lg:grid-cols-12 gap-12 mb-12">
-          <div class="lg:col-span-5">
-            <div class="flex items-center gap-4 mb-4 reveal">
-              <div class="deco-line"></div>
-              <span class="section-num">02 — APPS</span>
-            </div>
-            <h2 class="font-display text-4xl md:text-5xl leading-tight reveal">
-              Mis <br /><em class="text-gradient-2 font-light"
-                >aplicaciones.</em
-              >
-            </h2>
-          </div>
-          <div class="lg:col-span-7 lg:pt-12 reveal reveal-delay-1">
-            <p class="text-base text-white/70 leading-relaxed">
-              Diseño todo tipo de apps y experiencias digitales que conectan
-              contigo. Próximamente en Google Play.
-            </p>
-          </div>
-        </div>
-
-        <div
-          class="text-center py-16 reveal border border-dashed border-white/10 rounded-xl bg-black/20"
-        >
-          <div
-            class="w-16 h-16 mx-auto rounded-full border border-white/10 flex items-center justify-center mb-4 text-white/40"
-          >
-            <i data-lucide="package-x" class="w-7 h-7"></i>
-          </div>
-          <h3 class="font-display text-xl text-white/60 mb-1">
-            No hay apps disponibles
-          </h3>
-          <p
-            class="text-[10px] font-mono uppercase tracking-widest text-white/30"
-          >
-            Próximamente en Google Play
+        <h1 class="hero-title font-mono text-white">
+          <span>𝙵𝚛𝚊𝚜𝚎𝚜 𝚍𝚎 𝚞𝚗</span>
+          <span>𝚍𝚒𝚊𝚛𝚒𝚘 𝚍𝚎 𝚟𝚒𝚍𝚊.</span>
+        </h1>
+        <div class="mt-12 grid md:grid-cols-2 gap-8 reveal reveal-delay-1">
+          <p class="text-lg text-white/70 leading-relaxed max-w-md">
+            Soy <span class="text-white font-medium">Hishida</span>, un creador de contenido de frases y desarrollador de software. Mis frases son de motivación, reflexión, amor, psicología y factos. También Diseño todo tipo de apps y experiencias digitales que conectan contigo.
           </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="process" class="py-24 px-6 lg:px-12 relative z-10">
-      <div class="max-w-[1400px] mx-auto">
-        <div class="grid lg:grid-cols-12 gap-12 mb-16">
-          <div class="lg:col-span-5">
-            <div class="flex items-center gap-4 mb-4 reveal">
-              <div class="deco-line"></div>
-              <span class="section-num">03 — PROCESO</span>
-            </div>
-            <h2 class="font-display text-4xl md:text-5xl leading-tight reveal">
-              Mi forma <br />de
-              <em class="text-gradient-2 font-light">crear.</em>
-            </h2>
-          </div>
-          <div class="lg:col-span-7 lg:pt-12 reveal reveal-delay-1">
-            <p class="text-base text-white/70 leading-relaxed">
-              No es magia, es método. Cinco pasos que repito para cada app, cada
-              video y cada frase que termina llegando a miles de personas.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div class="reveal">
-            <div class="font-display text-4xl mb-2 num-badge text-white">
-              01
-            </div>
-            <h3 class="font-display text-sm mb-1">Observar</h3>
-            <p class="text-[10px] text-white/60">
-              Escuchar lo que la gente calla. Ahí están las mejores frases.
-            </p>
-          </div>
-          <div class="reveal reveal-delay-1">
-            <div class="font-display text-4xl mb-2 num-badge text-white">
-              02
-            </div>
-            <h3 class="font-display text-sm mb-1">Escribir</h3>
-            <p class="text-[10px] text-white/60">
-              Borradores sin filtro. Decirlo feo antes de decirlo bonito.
-            </p>
-          </div>
-          <div class="reveal reveal-delay-2">
-            <div class="font-display text-4xl mb-2 num-badge text-white">
-              03
-            </div>
-            <h3 class="font-display text-sm mb-1">Diseñar</h3>
-            <p class="text-[10px] text-white/60">
-              Tipografía, color, ritmo. El contenedor importa tanto como el
-              contenido.
-            </p>
-          </div>
-          <div class="reveal reveal-delay-3">
-            <div class="font-display text-4xl mb-2 num-badge text-white">
-              04
-            </div>
-            <h3 class="font-display text-sm mb-1">Lanzar</h3>
-            <p class="text-[10px] text-white/60">
-              Publicar sin miedo. Las frases perfectas no existen, las
-              publicadas sí.
-            </p>
-          </div>
-          <div class="reveal" style="transition-delay: 0.6s">
-            <div class="font-display text-4xl mb-2 num-badge text-white">
-              05
-            </div>
-            <h3 class="font-display text-sm mb-1">Escuchar</h3>
-            <p class="text-[10px] text-white/60">
-              Volver al paso 1 con lo que aprendí. El ciclo nunca termina.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section
-      id="contact"
-      class="py-24 px-6 lg:px-12 relative z-10 overflow-hidden"
-    >
-      <div class="max-w-[1400px] mx-auto relative">
-        <div class="grid lg:grid-cols-12 gap-12">
-          <div class="lg:col-span-5">
-            <div class="flex items-center gap-4 mb-4 reveal">
-              <div class="deco-line"></div>
-              <span class="section-num">04 — CONTACTO</span>
-            </div>
-            <h2
-              class="font-display text-4xl md:text-6xl leading-none mb-8 reveal"
-            >
-              Empecemos <br />algo
-              <em class="text-gradient-2 font-light">juntos.</em>
-            </h2>
-            <p
-              class="text-base text-white/70 leading-relaxed mb-10 reveal reveal-delay-1"
-            >
-              ¿Marca, colaboración, idea? Hazmelo saber. Leo cada mensaje y
-              respondo en 48 horas.
-            </p>
-
-            <div class="space-y-4 reveal reveal-delay-2">
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center"
-                >
-                  <i data-lucide="mail" class="w-4 h-4 text-white"></i>
-                </div>
-                <div>
-                  <div
-                    class="text-[10px] font-mono uppercase tracking-widest text-white/40"
-                  >
-                    Email
-                  </div>
-                  <a
-                    href="mailto:fsapp.074@gmail.com"
-                    class="text-sm text-white hover:text-white transition"
-                    >fsapp.074@gmail.com</a
-                  >
-                </div>
-              </div>
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center"
-                >
-                  <i data-lucide="map-pin" class="w-4 h-4 text-white"></i>
-                </div>
-                <div>
-                  <div
-                    class="text-[10px] font-mono uppercase tracking-widest text-white/40"
-                  >
-                    Ubicación
-                  </div>
-                  <div class="text-sm text-white">Remoto · LATAM</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center"
-                >
-                  <i data-lucide="clock" class="w-4 h-4 text-white"></i>
-                </div>
-                <div>
-                  <div
-                    class="text-[10px] font-mono uppercase tracking-widest text-white/40"
-                  >
-                    Respuesta
-                  </div>
-                  <div class="text-sm text-white">Dentro de 48 horas</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-7 reveal reveal-delay-1">
-            <form
-              id="contactForm"
-              class="card-glass rounded-xl p-5 lg:p-6 space-y-4"
-            >
-              <div class="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label
-                    class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block"
-                    >Nombre</label
-                  >
-                  <input
-                    type="text"
-                    required
-                    class="input-field w-full px-3 py-2 rounded-md text-sm"
-                    placeholder="¿Cómo te llamas?"
-                  />
-                </div>
-                <div>
-                  <label
-                    class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block"
-                    >Email</label
-                  >
-                  <input
-                    type="email"
-                    required
-                    class="input-field w-full px-3 py-2 rounded-md text-sm"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block"
-                  >Tipo de proyecto</label
-                >
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  <label class="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="tipo"
-                      value="app"
-                      class="peer sr-only"
-                      checked
-                    />
-                    <div
-                      class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition"
-                    >
-                      App
-                    </div>
-                  </label>
-                  <label class="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="tipo"
-                      value="video"
-                      class="peer sr-only"
-                    />
-                    <div
-                      class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition"
-                    >
-                      Video
-                    </div>
-                  </label>
-                  <label class="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="tipo"
-                      value="frase"
-                      class="peer sr-only"
-                    />
-                    <div
-                      class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition"
-                    >
-                      Frase
-                    </div>
-                  </label>
-                  <label class="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="tipo"
-                      value="otro"
-                      class="peer sr-only"
-                    />
-                    <div
-                      class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition"
-                    >
-                      Otro
-                    </div>
-                  </label>
-                </div>
-              </div>
-              <div>
-                <label
-                  class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block"
-                  >Mensaje</label
-                >
-                <textarea
-                  required
-                  rows="4"
-                  class="input-field w-full px-3 py-2 rounded-md resize-none text-sm"
-                  placeholder="Cuéntame tu idea..."
-                ></textarea>
-              </div>
-              <div class="flex items-center justify-between flex-wrap gap-3">
-                <div class="text-[10px] text-white/40 flex items-center gap-1">
-                  <i data-lucide="lock" class="w-2 h-2"></i>
-                  <span>Tus datos están seguros conmigo</span>
-                </div>
-                <button
-                  type="submit"
-                  class="btn-primary px-5 py-2.5 rounded-full inline-flex items-center gap-2 text-xs"
-                >
-                  <span>Enviar mensaje</span>
-                  <i data-lucide="send" class="w-3 h-3"></i>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer
-      class="border-t border-white/10 px-6 lg:px-12 pt-16 pb-8 bg-[#030303] relative z-10"
-    >
-      <div class="max-w-[1400px] mx-auto">
-        <div class="grid lg:grid-cols-12 gap-12 mb-12">
-          <div class="lg:col-span-5">
-            <a href="#home" class="flex items-center gap-3 mb-4">
-              <div
-                class="w-10 h-10 rounded-full overflow-hidden border border-white/10 flex items-center justify-center"
-              >
-                <img
-                  src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb"
-                  alt="Frases Hishida"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-              <span class="font-display text-xl"
-                >FsApp<span class="text-white">.</span></span
-              >
+          <div class="flex flex-wrap gap-3 items-start">
+            <a href="#apps" class="btn-primary px-7 py-4 rounded-full inline-flex items-center gap-2 text-sm">
+              <span>Ver apps</span>
+              <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
             </a>
-            <p class="font-display text-xl leading-tight max-w-md mb-6">
-              "Cada frase es un lugar donde alguien se reconoce."
-            </p>
-            <div class="flex gap-2">
-              <a
-                href="https://www.tiktok.com/@frases_hishida"
-                target="_blank"
-                class="social-icon"
-              >
-                <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4">
-                  <path
-                    d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.57 3.15-5.91 3.21-1.43.08-2.87-.29-4.09-1.06-2.03-1.27-3.35-3.58-3.29-6.03.05-2.41 1.45-4.7 3.41-5.77 1.21-.66 2.62-.95 4.03-.84v4.02c-.73-.25-1.54-.19-2.21.18-.63.35-1.11.96-1.31 1.65-.16.51-.11 1.06-.02 1.58.22 1.08 1.21 1.98 2.32 2.09 1.03.1 2.07-.44 2.6-1.31.2-.34.3-.73.36-1.12.06-1.79.02-3.57.03-5.36V.02h-.01z"
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://www.youtube.com/@Frases_hishida"
-                target="_blank"
-                class="social-icon"
-              >
-                <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4">
-                  <path
-                    d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://www.facebook.com/Hishida099"
-                target="_blank"
-                class="social-icon"
-              >
-                <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4">
-                  <path
-                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
-                  />
-                </svg>
-              </a>
-              <a href="mailto:fsapp.074@gmail.com" class="social-icon">
-                <i data-lucide="mail" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </div>
-          <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
-            <div>
-              <div
-                class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3"
-              >
-                Navegación
-              </div>
-              <ul class="space-y-2 text-xs">
-                <li>
-                  <a href="#home" class="text-white/70 hover:text-white"
-                    >Inicio</a
-                  >
-                </li>
-                <li>
-                  <a href="#apps" class="text-white/70 hover:text-white"
-                    >Apps</a
-                  >
-                </li>
-                <li>
-                  <a href="#contact" class="text-white/70 hover:text-white"
-                    >Contacto</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div>
-              <div
-                class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3"
-              >
-                Temas
-              </div>
-              <ul class="space-y-2 text-xs">
-                <li><span class="text-white/70">Motivación</span></li>
-                <li><span class="text-white/70">Reflexión</span></li>
-                <li><span class="text-white/70">Amor</span></li>
-                <li><span class="text-white/70">Psicología</span></li>
-                <li><span class="text-white/70">Factos</span></li>
-              </ul>
-            </div>
-            <div>
-              <div
-                class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3"
-              >
-                Legal
-              </div>
-              <ul class="space-y-2 text-xs">
-                <li>
-                  <a href="#" class="text-white/70 hover:text-white"
-                    >Términos</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[10px] text-white/40 font-mono"
-        >
-          <div>© 2025 FsApp · Todos los derechos reservados</div>
-          <div class="flex items-center gap-2">
-            <span>Hecho con</span>
-            <i data-lucide="heart" class="w-2 h-2 text-white"></i>
-            <span>por Hishida</span>
+            <a href="#contact" class="btn-ghost px-7 py-4 rounded-full inline-flex items-center gap-2 text-sm">
+              <span>Colaboremos</span>
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </a>
           </div>
         </div>
       </div>
-    </footer>
+      
+      <div class="lg:col-span-4 reveal reveal-delay-2">
+        <div class="relative float-anim">
+          <div class="aspect-[3/4] rounded-xl overflow-hidden img-hover relative">
+            <img src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb" alt="Frases Hishida" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6">
+              <div class="font-mono text-xs uppercase tracking-widest text-white/60 mb-2">Consejero · Desarrollador · Escritor</div>
+              <div class="font-display text-xl mb-4">FRASES_HISHIDA</div>
+              <a href="https://www.tiktok.com/@frases_hishida" target="_blank" class="block bg-black/40 border border-white/10 rounded-lg p-3 hover:bg-black/60 transition-colors mb-2">
+                <div class="flex items-center gap-1.5 mb-2">
+                  <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                  <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · TikTok</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <div id="followers-count" class="font-mono text-base font-bold text-white">...</div>
+                    <div class="text-[9px] text-white/50 uppercase tracking-wider">Seguidores</div>
+                  </div>
+                  <div class="border-x border-white/10">
+                    <div id="likes-count" class="font-mono text-base font-bold text-white">...</div>
+                    <div class="text-[9px] text-white/50 uppercase tracking-wider">Me gusta</div>
+                  </div>
+                  <div>
+                    <div id="videos-count" class="font-mono text-base font-bold text-white">...</div>
+                    <div class="text-[9px] text-white/50 uppercase tracking-wider">Videos</div>
+                  </div>
+                </div>
+              </a>
+              <a href="https://www.youtube.com/@Frases_hishida" target="_blank" class="flex items-center justify-center gap-2 bg-black/40 border border-white/10 rounded-lg p-2 hover:bg-black/60 transition-colors text-xs font-mono text-white/80 hover:text-white">
+                <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTube</span>
+                <span class="text-white/50">· 500 subs</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-      lucide.createIcons();
+    <div class="mt-16 reveal reveal-delay-3">
+      <div class="text-xs font-mono uppercase tracking-widest text-white/40 mb-4">Conecta conmigo en</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-[1100px]">
+        <a href="https://play.google.com" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
+              <svg viewBox="0 0 24 24" class="svg-icon"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.302 2.303-8.636-8.635z"/></svg>
+            </div>
+            <div>
+              <div class="font-display text-sm">Google Play</div>
+              <div class="text-[10px] text-white/50">Próximamente</div>
+            </div>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </a>
+        <a href="https://www.tiktok.com/@frases_hishida" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
+              <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.57 3.15-5.91 3.21-1.43.08-2.87-.29-4.09-1.06-2.03-1.27-3.35-3.58-3.29-6.03.05-2.41 1.45-4.7 3.41-5.77 1.21-.66 2.62-.95 4.03-.84v4.02c-.73-.25-1.54-.19-2.21.18-.63.35-1.11.96-1.31 1.65-.16.51-.11 1.06-.02 1.58.22 1.08 1.21 1.98 2.32 2.09 1.03.1 2.07-.44 2.6-1.31.2-.34.3-.73.36-1.12.06-1.79.02-3.57.03-5.36V.02h-.01z"/></svg>
+            </div>
+            <div>
+              <div class="font-display text-sm">TikTok</div>
+              <div class="text-[10px] text-white/50">19k seguidores</div>
+            </div>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </a>
+        <a href="https://www.youtube.com/@Frases_hishida" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
+              <svg viewBox="0 0 24 24" class="svg-icon"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <div>
+              <div class="font-display text-sm">YouTube</div>
+              <div class="text-[10px] text-white/50">500 suscriptores</div>
+            </div>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </a>
+        <a href="https://www.facebook.com/Hishida099" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
+              <svg viewBox="0 0 24 24" class="svg-icon"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <div>
+              <div class="font-display text-sm">Facebook</div>
+              <div class="text-[10px] text-white/50">Hishida099</div>
+            </div>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </a>
+        <a href="mailto:fsapp.074@gmail.com" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
+              <i data-lucide="mail" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <div class="font-display text-sm">Correo</div>
+              <div class="text-[10px] text-white/50">fsapp.074@gmail.com</div>
+            </div>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
-      // === PUNTERO FLUIDO (Lerp) ===
-      const dot = document.getElementById("cursorDot");
-      const ring = document.getElementById("cursorRing");
-      let mx = 0,
-        my = 0,
-        rx = 0,
-        ry = 0;
+<section id="apps" class="py-24 px-6 lg:px-12 relative z-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid lg:grid-cols-12 gap-12 mb-12">
+      <div class="lg:col-span-5">
+        <div class="flex items-center gap-4 mb-4 reveal">
+          <div class="deco-line"></div>
+          <span class="section-num">02 — APPS</span>
+        </div>
+        <h2 class="font-display text-4xl md:text-5xl leading-tight reveal">
+          Mis <br><em class="text-gradient-2 font-light">aplicaciones.</em>
+        </h2>
+      </div>
+      <div class="lg:col-span-7 lg:pt-12 reveal reveal-delay-1">
+        <p class="text-base text-white/70 leading-relaxed">
+          Diseño todo tipo de apps y experiencias digitales que conectan contigo. Próximamente en Google Play.
+        </p>
+      </div>
+    </div>
+    <div class="text-center py-16 reveal border border-dashed border-white/10 rounded-xl bg-black/20">
+      <div class="w-16 h-16 mx-auto rounded-full border border-white/10 flex items-center justify-center mb-4 text-white/40">
+        <i data-lucide="package-x" class="w-7 h-7"></i>
+      </div>
+      <h3 class="font-display text-xl text-white/60 mb-1">No hay apps disponibles</h3>
+      <p class="text-[10px] font-mono uppercase tracking-widest text-white/30">Próximamente en Google Play</p>
+    </div>
+  </div>
+</section>
 
-      window.addEventListener("mousemove", (e) => {
-        mx = e.clientX;
-        my = e.clientY;
-        // El punto se mueve instantáneamente
-        dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-      });
+<section id="process" class="py-24 px-6 lg:px-12 relative z-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid lg:grid-cols-12 gap-12 mb-16">
+      <div class="lg:col-span-5">
+        <div class="flex items-center gap-4 mb-4 reveal">
+          <div class="deco-line"></div>
+          <span class="section-num">03 — PROCESO</span>
+        </div>
+        <h2 class="font-display text-4xl md:text-5xl leading-tight reveal">
+          Mi forma <br>de <em class="text-gradient-2 font-light">crear.</em>
+        </h2>
+      </div>
+      <div class="lg:col-span-7 lg:pt-12 reveal reveal-delay-1">
+        <p class="text-base text-white/70 leading-relaxed">
+          No es magia, es método. Cinco pasos que repito para cada app, cada video y cada frase 
+          que termina llegando a miles de personas.
+        </p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="reveal"><div class="font-display text-4xl mb-2 num-badge text-white">01</div><h3 class="font-display text-sm mb-1">Observar</h3><p class="text-[10px] text-white/60">Escuchar lo que la gente calla. Ahí están las mejores frases.</p></div>
+      <div class="reveal reveal-delay-1"><div class="font-display text-4xl mb-2 num-badge text-white">02</div><h3 class="font-display text-sm mb-1">Escribir</h3><p class="text-[10px] text-white/60">Borradores sin filtro. Decirlo feo antes de decirlo bonito.</p></div>
+      <div class="reveal reveal-delay-2"><div class="font-display text-4xl mb-2 num-badge text-white">03</div><h3 class="font-display text-sm mb-1">Diseñar</h3><p class="text-[10px] text-white/60">Tipografía, color, ritmo. El contenedor importa tanto como el contenido.</p></div>
+      <div class="reveal reveal-delay-3"><div class="font-display text-4xl mb-2 num-badge text-white">04</div><h3 class="font-display text-sm mb-1">Lanzar</h3><p class="text-[10px] text-white/60">Publicar sin miedo. Las frases perfectas no existen, las publicadas sí.</p></div>
+      <div class="reveal" style="transition-delay:.6s"><div class="font-display text-4xl mb-2 num-badge text-white">05</div><h3 class="font-display text-sm mb-1">Escuchar</h3><p class="text-[10px] text-white/60">Volver al paso 1 con lo que aprendí. El ciclo nunca termina.</p></div>
+    </div>
+  </div>
+</section>
 
-      function animateRing() {
-        // El anillo sigue al punto con un ligero retraso matemático para dar fluidez
-        rx += (mx - rx) * 0.15;
-        ry += (my - ry) * 0.15;
-        ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
-        requestAnimationFrame(animateRing);
+<section id="contact" class="py-24 px-6 lg:px-12 relative z-10 overflow-hidden">
+  <div class="max-w-[1400px] mx-auto relative">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-5">
+        <div class="flex items-center gap-4 mb-4 reveal">
+          <div class="deco-line"></div>
+          <span class="section-num">04 — CONTACTO</span>
+        </div>
+        <h2 class="font-display text-4xl md:text-6xl leading-none mb-8 reveal">
+          Empecemos <br>algo <em class="text-gradient-2 font-light">juntos.</em>
+        </h2>
+        <p class="text-base text-white/70 leading-relaxed mb-10 reveal reveal-delay-1">
+          ¿Marca, colaboración, idea? Hazmelo saber. Leo cada mensaje y respondo en 48 horas.
+        </p>
+        <div class="space-y-4 reveal reveal-delay-2">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4 text-white"></i></div>
+            <div><div class="text-[10px] font-mono uppercase tracking-widest text-white/40">Email</div><a href="mailto:fsapp.074@gmail.com" class="text-sm text-white hover:text-white transition">fsapp.074@gmail.com</a></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center"><i data-lucide="map-pin" class="w-4 h-4 text-white"></i></div>
+            <div><div class="text-[10px] font-mono uppercase tracking-widest text-white/40">Ubicación</div><div class="text-sm text-white">Remoto · LATAM</div></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center"><i data-lucide="clock" class="w-4 h-4 text-white"></i></div>
+            <div><div class="text-[10px] font-mono uppercase tracking-widest text-white/40">Respuesta</div><div class="text-sm text-white">Dentro de 48 horas</div></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-7 reveal reveal-delay-1">
+        <form id="contactForm" class="card-glass rounded-xl p-5 lg:p-6 space-y-4">
+          <!-- Campos ocultos para FormSubmit -->
+          <input type="hidden" name="_subject" value="¡Nuevo mensaje desde FsApp!">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block">Nombre</label>
+              <input type="text" name="name" required class="input-field w-full px-3 py-2 rounded-md text-sm" placeholder="¿Cómo te llamas?">
+            </div>
+            <div>
+              <label class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block">Email</label>
+              <input type="email" name="email" required class="input-field w-full px-3 py-2 rounded-md text-sm" placeholder="tu@email.com">
+            </div>
+          </div>
+          <div>
+            <label class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block">Tipo de proyecto</label>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="tipo" value="app" class="peer sr-only" checked>
+                <div class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition">App</div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="tipo" value="video" class="peer sr-only">
+                <div class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition">Video</div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="tipo" value="frase" class="peer sr-only">
+                <div class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition">Frase</div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="tipo" value="otro" class="peer sr-only">
+                <div class="px-3 py-2 rounded-md border border-white/10 text-center text-xs peer-checked:border-white peer-checked:bg-white/10 transition">Otro</div>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 block">Mensaje</label>
+            <textarea required name="message" rows="4" class="input-field w-full px-3 py-2 rounded-md resize-none text-sm" placeholder="Cuéntame tu idea..."></textarea>
+          </div>
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div class="text-[10px] text-white/40 flex items-center gap-1">
+              <i data-lucide="lock" class="w-2 h-2"></i>
+              <span>Tus datos están seguros conmigo</span>
+            </div>
+            <button type="submit" id="submitBtn" class="btn-primary px-5 py-2.5 rounded-full inline-flex items-center gap-2 text-xs">
+              <span>Enviar mensaje</span>
+              <i data-lucide="send" class="w-3 h-3"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-white/10 px-6 lg:px-12 pt-16 pb-8 bg-[#030303] relative z-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid lg:grid-cols-12 gap-12 mb-12">
+      <div class="lg:col-span-5">
+        <a href="#home" class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 flex items-center justify-center">
+            <img src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb" alt="Frases Hishida" class="w-full h-full object-cover">
+          </div>
+          <span class="font-display text-xl">FsApp<span class="text-white">.</span></span>
+        </a>
+        <p class="font-display text-xl leading-tight max-w-md mb-6">"Cada frase es un lugar donde alguien se reconoce."</p>
+        <div class="flex gap-2">
+          <a href="https://www.tiktok.com/@frases_hishida" target="_blank" class="social-icon"><svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.57 3.15-5.91 3.21-1.43.08-2.87-.29-4.09-1.06-2.03-1.27-3.35-3.58-3.29-6.03.05-2.41 1.45-4.7 3.41-5.77 1.21-.66 2.62-.95 4.03-.84v4.02c-.73-.25-1.54-.19-2.21.18-.63.35-1.11.96-1.31 1.65-.16.51-.11 1.06-.02 1.58.22 1.08 1.21 1.98 2.32 2.09 1.03.1 2.07-.44 2.6-1.31.2-.34.3-.73.36-1.12.06-1.79.02-3.57.03-5.36V.02h-.01z"/></svg></a>
+          <a href="https://www.youtube.com/@Frases_hishida" target="_blank" class="social-icon"><svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.facebook.com/Hishida099" target="_blank" class="social-icon"><svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="mailto:fsapp.074@gmail.com" class="social-icon"><i data-lucide="mail" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+      <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
+        <div><div class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3">Navegación</div><ul class="space-y-2 text-xs"><li><a href="#home" class="text-white/70 hover:text-white">Inicio</a></li><li><a href="#apps" class="text-white/70 hover:text-white">Apps</a></li><li><a href="#contact" class="text-white/70 hover:text-white">Contacto</a></li></ul></div>
+        <div><div class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3">Temas</div><ul class="space-y-2 text-xs"><li><span class="text-white/70">Motivación</span></li><li><span class="text-white/70">Reflexión</span></li><li><span class="text-white/70">Amor</span></li><li><span class="text-white/70">Psicología</span></li><li><span class="text-white/70">Factos</span></li></ul></div>
+        <div><div class="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3">Legal</div><ul class="space-y-2 text-xs"><li><a href="#" class="text-white/70 hover:text-white">Términos</a></li></ul></div>
+      </div>
+    </div>
+    <div class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[10px] text-white/40 font-mono">
+      <div>© 2025 FsApp · Todos los derechos reservados</div>
+      <div class="flex items-center gap-2"><span>Hecho con</span><i data-lucide="heart" class="w-2 h-2 text-white"></i><span>por Hishida</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  
+  // === PUNTERO FLUIDO ===
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.15;
+    ry += (my - ry) * 0.15;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.body.addEventListener('mouseover', e => {
+    if (e.target.closest('a, button, .card-glass, input, textarea, label')) ring.classList.add('active');
+  });
+  document.body.addEventListener('mouseout', e => {
+    if (e.target.closest('a, button, .card-glass, input, textarea, label')) ring.classList.remove('active');
+  });
+  
+  // Animaciones
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  
+  document.getElementById('menuBtn').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('hidden'));
+  
+  const starField = document.getElementById('starField');
+  for (let i = 0; i < 50; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = '5s';
+    starField.appendChild(star);
+  }
+  
+  // === TIKTOK API CORREGIDA Y MEJORADA ===
+  function formatNumber(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1).replace('.0', '') + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1).replace('.0', '') + 'K';
+    return num.toString();
+  }
+
+  async function fetchWithTimeout(url, options = {}, timeout = 6000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    try {
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
+    }
+  }
+
+  async function actualizarStatsReales(username = 'frases_hishida') {
+    const target = username.replace('@', '');
+    const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
+    let success = false;
+
+    // 1. Intento Directo (Funciona en la mayoría de hostings reales)
+    try {
+      const response = await fetchWithTimeout(tikwmUrl, {}, 6000);
+      const data = await response.json();
+      if (data.code === 0 && data.data && data.data.stats) {
+        document.getElementById("followers-count").innerText = formatNumber(data.data.stats.followerCount || 0);
+        document.getElementById("likes-count").innerText = formatNumber(data.data.stats.heart || 0);
+        document.getElementById("videos-count").innerText = data.data.stats.videoCount || 0;
+        success = true;
       }
-      animateRing();
+    } catch (e) {}
 
-      // Eventos de hover para el anillo (Delegación de eventos para mejor rendimiento)
-      document.body.addEventListener("mouseover", (e) => {
-        if (
-          e.target.closest("a, button, .card-glass, input, textarea, label")
-        ) {
-          ring.classList.add("active");
+    // 2. Intento con Proxies (Si el directo falla por CORS)
+    const corsProxies = [
+      (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      (url) => `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(url)}`,
+      (url) => `https://thingproxy.freeboard.io/fetch/${url}`
+    ];
+
+    for (let i = 0; i < corsProxies.length; i++) {
+      if (success) break;
+      try {
+        const finalUrl = corsProxies[i](tikwmUrl);
+        const response = await fetchWithTimeout(finalUrl, {}, 6000);
+        const data = await response.json();
+        if (data.code === 0 && data.data && data.data.stats) {
+          document.getElementById("followers-count").innerText = formatNumber(data.data.stats.followerCount || 0);
+          document.getElementById("likes-count").innerText = formatNumber(data.data.stats.heart || 0);
+          document.getElementById("videos-count").innerText = data.data.stats.videoCount || 0;
+          success = true;
         }
-      });
-      document.body.addEventListener("mouseout", (e) => {
-        if (
-          e.target.closest("a, button, .card-glass, input, textarea, label")
-        ) {
-          ring.classList.remove("active");
-        }
-      });
+      } catch (e) {}
+    }
+    
+    if (!success) {
+      // Si todo falla, mostramos "..." para no mostrar datos viejos
+      document.getElementById("followers-count").innerText = "...";
+      document.getElementById("likes-count").innerText = "...";
+      document.getElementById("videos-count").innerText = "...";
+    }
+  }
 
-      // Animaciones de Revelado
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("in");
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-      );
-      document
-        .querySelectorAll(".reveal")
-        .forEach((el) => observer.observe(el));
+  actualizarStatsReales('frases_hishida');
+  setInterval(() => actualizarStatsReales('frases_hishida'), 60000);
+  
+  // === FORMULARIO DE CONTACTO CON FORMSUBMIT ===
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    
+    // Cambiar el botón a "Enviando..."
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>Enviando...</span>';
+    toast.textContent = 'Enviando mensaje...';
+    toast.classList.add('show');
 
-      // Menú móvil
-      document.getElementById("menuBtn").addEventListener("click", () => {
-        document.getElementById("mobileMenu").classList.toggle("hidden");
-      });
-
-      // Estrellas
-      const starField = document.getElementById("starField");
-      for (let i = 0; i < 50; i++) {
-        // Reducidas a 50 para mejor rendimiento
-        const star = document.createElement("div");
-        star.className = "star";
-        star.style.left = Math.random() * 100 + "%";
-        star.style.top = Math.random() * 100 + "%";
-        star.style.animationDelay = Math.random() * 3 + "s";
-        star.style.animationDuration = "5s";
-        starField.appendChild(star);
+    // Enviar datos a FormSubmit (llegará a tu correo)
+    const formData = new FormData(this);
+    fetch('https://formsubmit.co/ajax/fsapp.074@gmail.com', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.success === "true" || data.message === "Form submitted successfully") {
+        toast.textContent = '¡Mensaje enviado con éxito!';
+        this.reset(); // Limpiar formulario
+      } else {
+        toast.textContent = 'Hubo un error. Intenta de nuevo.';
       }
-
-      // === DATOS TIKTOK OPTIMIZADOS ===
-      function formatNumber(num) {
-        if (num >= 1000000)
-          return (num / 1000000).toFixed(1).replace(".0", "") + "M";
-        if (num >= 1000) return (num / 1000).toFixed(1).replace(".0", "") + "K";
-        return num.toString();
-      }
-
-      async function fetchWithTimeout(url, options = {}, timeout = 5000) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeout);
-        try {
-          const response = await fetch(url, {
-            ...options,
-            signal: controller.signal,
-          });
-          clearTimeout(timeoutId);
-          return response;
-        } catch (error) {
-          clearTimeout(timeoutId);
-          throw error;
-        }
-      }
-
-      const corsProxies = [
-        (url) =>
-          `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(url)}`,
-        (url) =>
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-        (url) => `https://thingproxy.freeboard.io/fetch/${url}`,
-      ];
-
-      async function actualizarStatsReales(username = "frases_hishida") {
-        const target = username.replace("@", "");
-        const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
-        let success = false;
-
-        // Intento 1: Directo
-        try {
-          const response = await fetchWithTimeout(tikwmUrl, {}, 4000);
-          const data = await response.json();
-          if (data.code === 0 && data.data && data.data.stats) {
-            document.getElementById("followers-count").innerText = formatNumber(
-              data.data.stats.followerCount || 0,
-            );
-            document.getElementById("likes-count").innerText = formatNumber(
-              data.data.stats.heart || 0,
-            );
-            document.getElementById("videos-count").innerText =
-              data.data.stats.videoCount || 0;
-            success = true;
-          }
-        } catch (e) {}
-
-        // Intento 2: Proxies
-        for (let i = 0; i < corsProxies.length; i++) {
-          if (success) break;
-          try {
-            const finalUrl = corsProxies[i](tikwmUrl);
-            const response = await fetchWithTimeout(finalUrl, {}, 4000);
-            const data = await response.json();
-            if (data.code === 0 && data.data && data.data.stats) {
-              document.getElementById("followers-count").innerText =
-                formatNumber(data.data.stats.followerCount || 0);
-              document.getElementById("likes-count").innerText = formatNumber(
-                data.data.stats.heart || 0,
-              );
-              document.getElementById("videos-count").innerText =
-                data.data.stats.videoCount || 0;
-              success = true;
-            }
-          } catch (e) {}
-        }
-
-        if (!success) {
-          document.getElementById("followers-count").innerText = "19.0K";
-          document.getElementById("likes-count").innerText = "452.1K";
-          document.getElementById("videos-count").innerText = "132";
-        }
-      }
-
-      actualizarStatsReales("frases_hishida");
-      setInterval(() => actualizarStatsReales("frases_hishida"), 60000);
-
-      // Formulario
-      document.getElementById("contactForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const toast = document.getElementById("toast");
-        toast.textContent = "¡Mensaje enviado! Te responderé pronto.";
-        toast.classList.add("show");
-        setTimeout(() => {
-          toast.classList.remove("show");
-          toast.textContent = "Copiado al portapapeles";
-        }, 3000);
-        e.target.reset();
-      });
-    </script>
-  </body>
+    })
+    .catch(error => {
+      toast.textContent = 'Error de conexión. Intenta más tarde.';
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.textContent = 'Copiado al portapapeles';
+      }, 4000);
+    });
+  });
+</script>
+</body>
 </html>
