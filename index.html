@@ -250,7 +250,7 @@
       <div class="reveal reveal-delay-1"><div class="font-display text-4xl mb-2 num-badge text-white">02</div><h3 class="font-display text-sm mb-1">Escribir</h3><p class="text-[10px] text-white/60">Borradores sin filtro. Decirlo feo antes de decirlo bonito.</p></div>
       <div class="reveal reveal-delay-2"><div class="font-display text-4xl mb-2 num-badge text-white">03</div><h3 class="font-display text-sm mb-1">Diseñar</h3><p class="text-[10px] text-white/60">Tipografía, color, ritmo. El contenedor importa tanto como el contenido.</p></div>
       <div class="reveal reveal-delay-3"><div class="font-display text-4xl mb-2 num-badge text-white">04</div><h3 class="font-display text-sm mb-1">Lanzar</h3><p class="text-[10px] text-white/60">Publicar sin miedo. Las frases perfectas no existen, las publicadas sí.</p></div>
-      <div class="reveal" style="transition-delay:.6s"><div class="font-display text-4xl mb-2 num-badge text-white">05</div><h3 class="font-display text-sm mb-1">Escuchar</h3><p class="text-[10px] text-white/60">Volver al paso 1 with lo que aprendí. El ciclo nunca termina.</p></div>
+      <div class="reveal" style="transition-delay:.6s"><div class="font-display text-4xl mb-2 num-badge text-white">05</div><h3 class="font-display text-sm mb-1">Escuchar</h3><p class="text-[10px] text-white/60">Volver al paso 1 con lo que aprendí. El ciclo nunca termina.</p></div>
     </div>
   </div>
 </section>
@@ -375,7 +375,7 @@
     starField.appendChild(star);
   }
   
-  // === TIKTOK API CORREGIDA ===
+  // === TIKTOK API: LLAMADA DIRECTA AL WORKER ===
   function formatNumber(num) {
     if (num >= 1000000) return (num / 1000000).toFixed(1).replace('.0', '') + 'M';
     if (num >= 1000) return (num / 1000).toFixed(1).replace('.0', '') + 'K';
@@ -384,59 +384,21 @@
 
   async function actualizarStatsReales(username = 'frases_hishida') {
     const target = username.replace('@', '');
-    let success = false;
-
-    // 1. Cloudflare Worker (Tu servidor personal, evita el bloqueo de GitHub Pages)
     try {
       const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?user=${target}`;
       const response = await fetch(workerUrl);
-      const html = await response.text();
-      
-      const followerMatch = html.match(/"followerCount":(\d+)/);
-      const heartMatch = html.match(/"heartCount":(\d+)/);
-      const videoMatch = html.match(/"videoCount":(\d+)/);
-      
-      if (followerMatch && followerMatch[1]) {
-        document.getElementById("followers-count").innerText = formatNumber(parseInt(followerMatch[1]));
-        if (heartMatch) document.getElementById("likes-count").innerText = formatNumber(parseInt(heartMatch[1]));
-        if (videoMatch) document.getElementById("videos-count").innerText = videoMatch[1];
-        success = true;
-      }
-    } catch (error) {}
-
-    if (success) return;
-
-    // 2. TikWM API Directo
-    try {
-      const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
-      const response = await fetch(tikwmUrl);
       const data = await response.json();
-      if (data.code === 0 && data.data && data.data.stats) {
-        document.getElementById("followers-count").innerText = formatNumber(data.data.stats.followerCount || 0);
-        document.getElementById("likes-count").innerText = formatNumber(data.data.stats.heart || 0);
-        document.getElementById("videos-count").innerText = data.data.stats.videoCount || 0;
-        success = true;
+      
+      if (data && !data.error && data.followers !== undefined) {
+        document.getElementById("followers-count").innerText = formatNumber(data.followers);
+        document.getElementById("likes-count").innerText = formatNumber(data.likes);
+        document.getElementById("videos-count").innerText = data.videos;
+      } else {
+        document.getElementById("followers-count").innerText = "...";
+        document.getElementById("likes-count").innerText = "...";
+        document.getElementById("videos-count").innerText = "...";
       }
-    } catch (error) {}
-
-    if (success) return;
-
-    // 3. AllOrigins
-    try {
-      const tikwmUrl = `https://www.tikwm.com/api/?user=${encodeURIComponent(target)}`;
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tikwmUrl)}`;
-      const response = await fetch(proxyUrl);
-      const data = await response.json();
-      if (data.code === 0 && data.data && data.data.stats) {
-        document.getElementById("followers-count").innerText = formatNumber(data.data.stats.followerCount || 0);
-        document.getElementById("likes-count").innerText = formatNumber(data.data.stats.heart || 0);
-        document.getElementById("videos-count").innerText = data.data.stats.videoCount || 0;
-        success = true;
-      }
-    } catch (error) {}
-
-    // Si todo falla, mostramos "..." para no romper el diseño
-    if (!success) {
+    } catch (error) {
       document.getElementById("followers-count").innerText = "...";
       document.getElementById("likes-count").innerText = "...";
       document.getElementById("videos-count").innerText = "...";
