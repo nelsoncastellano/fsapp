@@ -60,11 +60,21 @@
   .star{ position:absolute;width:2px;height:2px;background:#fff; border-radius:50%;opacity:0;animation:twinkle 5s ease-in-out infinite; }
   @keyframes twinkle{ 0%,100%{opacity:0} 50%{opacity:0.8} }
   ::selection{background:var(--accent);color:#0c0717}
-  .img-hover{overflow:hidden} .img-hover img{transition:transform 1.2s var(--ease-out-expo); will-change: transform;} .img-hover:hover img{transform:scale(1.08)}
+  
+  /* --- Efecto Imagen Principal --- */
+  .img-hover{overflow:hidden}
+  .main-banner-img {
+    transition: opacity 0.8s var(--ease-out-expo);
+    will-change: opacity;
+  }
+  .img-hover:hover .main-banner-img {
+    transform: scale(1.08);
+  }
+
   .num-badge{ font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
   .svg-icon { fill: #ffffff; width: 20px; height: 20px; }
 
-  /* === CARRUSEL CORREGIDO (TARJETA COMPLETA) === */
+  /* --- Carrusel Sincronizado --- */
   .carousel-container {
     width: 100%;
     overflow: hidden;
@@ -72,23 +82,12 @@
   .carousel-track {
     display: flex;
     width: 100%;
-    animation: slide 25s infinite;
+    transition: transform 0.8s var(--ease-out-expo);
   }
   .carousel-track > div {
-    min-width: 100%; /* Cada tarjeta ocupa exactamente el 100% del espacio */
+    min-width: 100%;
     flex-shrink: 0;
-    padding-right: 4px; /* Evita que el borde se corte en algunos navegadores */
-  }
-  .carousel-track:hover {
-    animation-play-state: paused;
-  }
-  @keyframes slide {
-    0%, 15% { transform: translateX(0%); }
-    20%, 35% { transform: translateX(-100%); }
-    40%, 55% { transform: translateX(-200%); }
-    60%, 75% { transform: translateX(-300%); }
-    80%, 95% { transform: translateX(-400%); }
-    100% { transform: translateX(0%); }
+    padding-right: 4px;
   }
 </style>
 </head>
@@ -167,25 +166,22 @@
       <div class="lg:col-span-4 reveal reveal-delay-2">
         <div class="relative float-anim">
           <div class="aspect-[3/4] rounded-xl overflow-hidden img-hover relative">
-            <img src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb" alt="Frases Hishida" class="w-full h-full object-cover" />
+            <img id="main-banner-img" src="https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb" alt="Frases Hishida" class="w-full h-full object-cover main-banner-img" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <div class="font-mono text-xs uppercase tracking-widest text-white/60 mb-2">Consejero · Desarrollador · Escritor</div>
               <div class="font-display text-xl mb-4">FRASES_HISHIDA</div>
               
-              <!-- CARRUSEL CON IMÁGENES DE PERFIL -->
               <div class="carousel-container">
-                <div class="carousel-track">
+                <div class="carousel-track" id="carousel-track">
                   
                   <!-- Slide 1: TikTok -->
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <img src="https://z-cdn-media.chatglm.cn/files/b7e4cc38-3166-40a8-8a03-435ad5fb2811.jpeg?auth_key=1887103865-c74e11b037f84a548f1940c060f135e7-0-e155425352c2ec3059fbaaec13c8192c" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="TikTok Profile">
-                      <div class="flex flex-col">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · TikTok</span>
-                        </div>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                        <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · TikTok</span>
                       </div>
                     </div>
                     <div class="grid grid-cols-3 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
@@ -199,11 +195,9 @@
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <img src="https://z-cdn-media.chatglm.cn/files/4845ddcd-184f-450b-a7dd-a4ac3f9259c7.jpeg?auth_key=1887103865-5f7d28978f7f4b88bfb47dc24fdd344e-0-ce3670f294273cced4141bf7b0f4f4b4" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="YouTube Profile">
-                      <div class="flex flex-col">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · YouTube</span>
-                        </div>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
+                        <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · YouTube</span>
                       </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
@@ -216,11 +210,9 @@
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <img src="https://z-cdn-media.chatglm.cn/files/3b255c9b-3e27-4bbe-ba11-53c09f236e06.jpg?auth_key=1887103865-efd4595732184ddfb2b7c8eb3fe35e31-0-96e66fb204f19688536a82d8ff516e58" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="Instagram Profile">
-                      <div class="flex flex-col">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse"></div>
-                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · Instagram</span>
-                        </div>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse"></div>
+                        <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · Instagram</span>
                       </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
@@ -233,11 +225,9 @@
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <img src="https://z-cdn-media.chatglm.cn/files/aad076d8-927a-418d-a6b5-15ad421cdf93.jpeg?auth_key=1887103865-da632be4f555497aaab2481985e79919-0-13d5212ee6ebb9dcd163f4bdaffefe18" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="Facebook Profile">
-                      <div class="flex flex-col">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
-                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · Facebook</span>
-                        </div>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
+                        <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · Facebook</span>
                       </div>
                     </div>
                     <div class="grid grid-cols-1 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
@@ -251,11 +241,9 @@
                       <div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
                         <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.302 2.303-8.636-8.635z"/></svg>
                       </div>
-                      <div class="flex flex-col">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">Próximamente · Play Store</span>
-                        </div>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                        <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">Próximamente · Play Store</span>
                       </div>
                     </div>
                     <div class="grid grid-cols-1 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
@@ -476,14 +464,48 @@
     starField.appendChild(star);
   }
   
-  // === FUNCIÓN DE FORMATO CORTO (K, M) ===
+  // === SINCRONIZACIÓN DE IMAGEN GRANDE Y CARRUSEL ===
+  const bannerImages = [
+    'https://z-cdn-media.chatglm.cn/files/b7e4cc38-3166-40a8-8a03-435ad5fb2811.jpeg?auth_key=1887103865-c74e11b037f84a548f1940c060f135e7-0-e155425352c2ec3059fbaaec13c8192c', // TikTok
+    'https://z-cdn-media.chatglm.cn/files/4845ddcd-184f-450b-a7dd-a4ac3f9259c7.jpeg?auth_key=1887103865-5f7d28978f7f4b88bfb47dc24fdd344e-0-ce3670f294273cced4141bf7b0f4f4b4', // YouTube
+    'https://z-cdn-media.chatglm.cn/files/3b255c9b-3e27-4bbe-ba11-53c09f236e06.jpg?auth_key=1887103865-efd4595732184ddfb2b7c8eb3fe35e31-0-96e66fb204f19688536a82d8ff516e58', // Instagram
+    'https://z-cdn-media.chatglm.cn/files/aad076d8-927a-418d-a6b5-15ad421cdf93.jpeg?auth_key=1887103865-da632be4f555497aaab2481985e79919-0-13d5212ee6ebb9dcd163f4bdaffefe18', // Facebook
+    'https://z-cdn-media.chatglm.cn/files/f9d84618-90db-41f3-9a83-c79c9af5e03a.jpg?auth_key=1886902691-d5741089171c4acc9c25e4abaaedd492-0-8ad25b9e59736a0528ff99a574ac0fdb'  // Google Play (Default)
+  ];
+
+  const mainImg = document.getElementById('main-banner-img');
+  const track = document.getElementById('carousel-track');
+  let currentSlide = 0;
+  const totalSlides = 5;
+  let isAnimating = false;
+
+  function changeSlide() {
+    if (isAnimating) return;
+    isAnimating = true;
+    
+    currentSlide = (currentSlide + 1) % totalSlides;
+    
+    // Mover el carrusel pequeño
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Desvanecer imagen grande
+    mainImg.style.opacity = 0;
+    setTimeout(() => {
+      mainImg.src = bannerImages[currentSlide];
+      mainImg.style.opacity = 1;
+      isAnimating = false;
+    }, 500);
+  }
+
+  setInterval(changeSlide, 5000); // Cambia cada 5 segundos
+
+  // === FETCHS DE REDES SOCIALES ===
   function formatNumber(num) {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
     if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
     return num.toString();
   }
 
-  // === FETCH TIKTOK (VÍA CLOUDFLARE WORKER) ===
   async function fetchTikTok() {
     try {
       const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?user=frases_hishida&_=${Date.now()}`;
@@ -504,7 +526,6 @@
     } catch (error) {}
   }
 
-  // === FETCH YOUTUBE (VÍA PROXY PÚBLICO) ===
   async function fetchYouTube() {
     try {
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.youtube.com/@Frases_hishida')}`;
@@ -523,7 +544,6 @@
     } catch (error) {}
   }
 
-  // === FETCH INSTAGRAM (VÍA PROXY PÚBLICO) ===
   async function fetchInstagram() {
     try {
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.instagram.com/TU_USER_AQUI/')}`;
@@ -541,7 +561,6 @@
     } catch (error) {}
   }
 
-  // === FETCH FACEBOOK (VÍA PROXY PÚBLICO) ===
   async function fetchFacebook() {
     try {
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.facebook.com/Hishida099')}`;
@@ -557,13 +576,12 @@
     } catch (error) {}
   }
 
-  // Ejecutar todas las funciones
+  // Ejecutar cargas
   fetchTikTok();
   fetchYouTube();
   fetchInstagram();
   fetchFacebook();
 
-  // Actualizar cada 1 minuto
   setInterval(() => {
     fetchTikTok();
     fetchYouTube();
