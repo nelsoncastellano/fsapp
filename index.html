@@ -61,60 +61,21 @@
   @keyframes twinkle{ 0%,100%{opacity:0} 50%{opacity:0.8} }
   ::selection{background:var(--accent);color:#0c0717}
   
-  /* --- Efecto Imagen Principal (Fluida) --- */
   .img-hover{overflow:hidden}
-  .main-banner-img {
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform;
-  }
-  .img-hover:hover .main-banner-img {
-    transform: scale(1.05);
-  }
+  .main-banner-img { transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1); will-change: opacity, transform; }
+  .img-hover:hover .main-banner-img { transform: scale(1.05); }
 
   .num-badge{ font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
   .svg-icon { fill: #ffffff; width: 20px; height: 20px; }
 
-  /* --- Carrusel Sincronizado (Fluida) --- */
-  .carousel-container {
-    width: 100%;
-    overflow: hidden;
-  }
-  .carousel-track {
-    display: flex;
-    width: 100%;
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .carousel-track > div {
-    min-width: 100%;
-    flex-shrink: 0;
-    padding-right: 4px;
-  }
+  .carousel-container { width: 100%; overflow: hidden; }
+  .carousel-track { display: flex; width: 100%; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+  .carousel-track > div { min-width: 100%; flex-shrink: 0; padding-right: 4px; }
 
-  /* --- Efecto Eco (Pulsación) --- */
-  .pulse-dot {
-    position: relative;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-  .pulse-dot::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    background: inherit;
-    animation: pulse-echo 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-  @keyframes pulse-echo {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(3); opacity: 0; }
-  }
-  .bg-tt { background-color: #25F4EE; } /* Color oficial TikTok */
-  .bg-yt { background-color: #FF0000; } /* Color oficial YouTube */
-  .bg-ig { background-color: #E1306C; } /* Color oficial Instagram */
-  .bg-fb { background-color: #1877F2; } /* Color oficial Facebook */
-  .bg-gp { background-color: #34A853; } /* Color oficial Google Play */
+  .pulse-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; }
+  .pulse-dot::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: inherit; animation: pulse-echo 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  @keyframes pulse-echo { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(3); opacity: 0; } }
+  .bg-tt { background-color: #25F4EE; } .bg-yt { background-color: #FF0000; } .bg-ig { background-color: #E1306C; } .bg-fb { background-color: #1877F2; } .bg-gp { background-color: #34A853; }
 </style>
 </head>
 <body class="bg-atmosphere relative">
@@ -195,13 +156,12 @@
             <img id="main-banner-img" src="https://z-cdn-media.chatglm.cn/files/7be23a12-8d3e-4461-aab3-7229ebb8518a.jpeg?auth_key=1887104733-2312e41655fd49edb906fd65a1e9fc7d-0-76dd053495e003931e56170d750dfa65" alt="Frases Hishida" class="w-full h-full object-cover main-banner-img" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
-              <div class="font-mono text-xs uppercase tracking-widest text-white/60 mb-2">Consejero · Desarrollador · Escritor</div>
+              <div class="font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">Consejero · Desarrollador · Escritor · Creador de Contenido</div>
               <div class="font-display text-xl mb-4">FRASES_HISHIDA</div>
               
               <div class="carousel-container">
                 <div class="carousel-track" id="carousel-track">
                   
-                  <!-- Slide 1: TikTok -->
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <div class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
@@ -219,7 +179,6 @@
                     </div>
                   </div>
 
-                  <!-- Slide 2: YouTube -->
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <div class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
@@ -236,7 +195,6 @@
                     </div>
                   </div>
 
-                  <!-- Slide 3: Instagram -->
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <div class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
@@ -253,7 +211,6 @@
                     </div>
                   </div>
 
-                  <!-- Slide 4: Facebook -->
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <div class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
@@ -269,7 +226,6 @@
                     </div>
                   </div>
 
-                  <!-- Slide 5: Google Play -->
                   <div>
                     <div class="flex items-center gap-2 mb-2">
                       <div class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
@@ -293,11 +249,9 @@
       </div>
     </div>
 
-    <!-- Botones de Redes (Sin Correo) -->
     <div class="mt-16 reveal reveal-delay-3">
       <div class="text-xs font-mono uppercase tracking-widest text-white/40 mb-4">Conecta conmigo en</div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-[1100px]">
-        
         <a href="https://play.google.com" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.302 2.303-8.636-8.635z"/></svg></div>
@@ -305,7 +259,6 @@
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
-        
         <a href="https://www.tiktok.com/@frases_hishida" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.57 3.15-5.91 3.21-1.43.08-2.87-.29-4.09-1.06-2.03-1.27-3.35-3.58-3.29-6.03.05-2.41 1.45-4.7 3.41-5.77 1.21-.66 2.62-.95 4.03-.84v4.02c-.73-.25-1.54-.19-2.21.18-.63.35-1.11.96-1.31 1.65-.16.51-.11 1.06-.02 1.58.22 1.08 1.21 1.98 2.32 2.09 1.03.1 2.07-.44 2.6-1.31.2-.34.3-.73.36-1.12.06-1.79.02-3.57.03-5.36V.02h-.01z"/></svg></div>
@@ -313,7 +266,6 @@
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
-        
         <a href="https://www.youtube.com/@Frases_hishida" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
@@ -321,7 +273,6 @@
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
-        
         <a href="https://www.instagram.com/TU_USER_AQUI" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div>
@@ -329,7 +280,6 @@
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
-
         <a href="https://www.facebook.com/Hishida099" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
@@ -337,7 +287,6 @@
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
-
       </div>
     </div>
   </div>
@@ -498,7 +447,6 @@
     starField.appendChild(star);
   }
   
-  // === SINCRONIZACIÓN FLUIDA DE IMAGEN GRANDE Y CARRUSEL ===
   const bannerImages = [
     'https://z-cdn-media.chatglm.cn/files/7be23a12-8d3e-4461-aab3-7229ebb8518a.jpeg?auth_key=1887104733-2312e41655fd49edb906fd65a1e9fc7d-0-76dd053495e003931e56170d750dfa65', // TikTok
     'https://z-cdn-media.chatglm.cn/files/6fde01f9-b88d-4cf4-9465-8d485c2b90a4.jpg?auth_key=1887104733-1ad66005b79246e6be2288ebab32ffcd-0-c64adf1a9a2734e2518d4158aa5ed090', // YouTube
@@ -516,120 +464,63 @@
   function changeSlide() {
     if (isAnimating) return;
     isAnimating = true;
-    
     currentSlide = (currentSlide + 1) % totalSlides;
-    
-    // Mover el carrusel pequeño (transición fluida)
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    
-    // Desvanecer imagen grande suavemente
     mainImg.style.opacity = 0;
-    
     setTimeout(() => {
       mainImg.src = bannerImages[currentSlide];
-      mainImg.onload = () => {
-        mainImg.style.opacity = 1;
-        isAnimating = false;
-      };
-      // Fallback por si la imagen tarda mucho
-      setTimeout(() => { 
-        mainImg.style.opacity = 1; 
-        isAnimating = false; 
-      }, 50);
+      mainImg.onload = () => { mainImg.style.opacity = 1; isAnimating = false; };
+      setTimeout(() => { mainImg.style.opacity = 1; isAnimating = false; }, 50);
     }, 600);
   }
-
   setInterval(changeSlide, 5000);
 
-  // === FETCHS DE REDES SOCIALES ===
   function formatNumber(num) {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
     if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
     return num.toString();
   }
 
-  async function fetchTikTok() {
+  async function fetchPlatformStats(platform, user) {
     try {
-      const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?user=frases_hishida&_=${Date.now()}`;
+      const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?platform=${platform}&user=${user}&_=${Date.now()}`;
       const response = await fetch(workerUrl);
-      const text = await response.text();
-      
-      const followerMatch = text.match(/"followerCount":(\d+)/);
-      const heartMatch = text.match(/"heartCount":(\d+)/);
-      const videoMatch = text.match(/"videoCount":(\d+)/);
-      
-      if (followerMatch && followerMatch[1]) {
-        const f = parseInt(followerMatch[1]);
-        document.getElementById("tt-followers").innerText = formatNumber(f);
-        document.getElementById("btn-tt").innerText = formatNumber(f) + " seguidores";
-      }
-      if (heartMatch) document.getElementById("tt-likes").innerText = formatNumber(parseInt(heartMatch[1]));
-      if (videoMatch) document.getElementById("tt-videos").innerText = formatNumber(parseInt(videoMatch[1]));
-    } catch (error) {}
+      if (!response.ok) return null;
+      const data = await response.json();
+      return data.error ? null : data; // Devuelve null si hay error para que el UI mantenga "..."
+    } catch (e) { return null; }
   }
 
-  async function fetchYouTube() {
-    try {
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.youtube.com/@Frases_hishida')}`;
-      const response = await fetch(proxyUrl);
-      const html = await response.text();
-      
-      const subMatch = html.match(/"subscriberCountText":\{"simpleText":"(.*?)"/);
-      const vidMatch = html.match(/"videosCountText":\{"simpleText":"(.*?)"/);
-      
-      if (subMatch && subMatch[1]) {
-        let subs = subMatch[1].replace(/\D/g, '');
-        document.getElementById("yt-subs").innerText = formatNumber(parseInt(subs));
-        document.getElementById("btn-yt").innerText = formatNumber(parseInt(subs)) + " suscriptores";
-      }
-      if (vidMatch) document.getElementById("yt-vids").innerText = vidMatch[1].replace(/\D/g, '');
-    } catch (error) {}
+  async function loadAllStats() {
+    const tt = await fetchPlatformStats('tiktok', 'frases_hishida');
+    if (tt) {
+      document.getElementById("tt-followers").innerText = formatNumber(tt.followers);
+      document.getElementById("tt-likes").innerText = formatNumber(tt.likes);
+      document.getElementById("tt-videos").innerText = formatNumber(tt.videos);
+      document.getElementById("btn-tt").innerText = formatNumber(tt.followers) + " seguidores";
+    }
+
+    const yt = await fetchPlatformStats('youtube', 'Frases_hishida');
+    if (yt) {
+      document.getElementById("yt-subs").innerText = formatNumber(yt.followers);
+      document.getElementById("btn-yt").innerText = formatNumber(yt.followers) + " suscriptores";
+    }
+
+    const ig = await fetchPlatformStats('instagram', 'TU_USER_AQUI');
+    if (ig) {
+      document.getElementById("ig-followers").innerText = formatNumber(ig.followers);
+      document.getElementById("btn-ig").innerText = formatNumber(ig.followers) + " seguidores";
+    }
+
+    const fb = await fetchPlatformStats('facebook', 'Hishida099');
+    if (fb) {
+      document.getElementById("fb-friends").innerText = formatNumber(fb.followers);
+      document.getElementById("btn-fb").innerText = formatNumber(fb.followers) + " seguidores";
+    }
   }
 
-  async function fetchInstagram() {
-    try {
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.instagram.com/TU_USER_AQUI/')}`;
-      const response = await fetch(proxyUrl);
-      const html = await response.text();
-      
-      const followerMatch = html.match(/"edge_followed_by":\{"count":(\d+)/);
-      const followingMatch = html.match(/"edge_follow":\{"count":(\d+)/);
-      
-      if (followerMatch && followerMatch[1]) {
-        document.getElementById("ig-followers").innerText = formatNumber(parseInt(followerMatch[1]));
-        document.getElementById("btn-ig").innerText = formatNumber(parseInt(followerMatch[1])) + " seguidores";
-      }
-      if (followingMatch) document.getElementById("ig-following").innerText = formatNumber(parseInt(followingMatch[1]));
-    } catch (error) {}
-  }
-
-  async function fetchFacebook() {
-    try {
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.facebook.com/Hishida099')}`;
-      const response = await fetch(proxyUrl);
-      const html = await response.text();
-      
-      const friendMatch = html.match(/"friend_count":(\d+)/) || html.match(/"follower_count":(\d+)/);
-      
-      if (friendMatch && friendMatch[1]) {
-        document.getElementById("fb-friends").innerText = formatNumber(parseInt(friendMatch[1]));
-        document.getElementById("btn-fb").innerText = formatNumber(parseInt(friendMatch[1])) + " seguidores";
-      }
-    } catch (error) {}
-  }
-
-  // Ejecutar cargas
-  fetchTikTok();
-  fetchYouTube();
-  fetchInstagram();
-  fetchFacebook();
-
-  setInterval(() => {
-    fetchTikTok();
-    fetchYouTube();
-    fetchInstagram();
-    fetchFacebook();
-  }, 60000);
+  loadAllStats();
+  setInterval(loadAllStats, 60000);
 </script>
 </body>
 </html>
