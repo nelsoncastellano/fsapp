@@ -63,6 +63,33 @@
   .img-hover{overflow:hidden} .img-hover img{transition:transform 1.2s var(--ease-out-expo); will-change: transform;} .img-hover:hover img{transform:scale(1.08)}
   .num-badge{ font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
   .svg-icon { fill: #ffffff; width: 20px; height: 20px; }
+
+  /* === CARRUSEL CORREGIDO (TARJETA COMPLETA) === */
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: flex;
+    width: 100%;
+    animation: slide 25s infinite;
+  }
+  .carousel-track > div {
+    min-width: 100%; /* Cada tarjeta ocupa exactamente el 100% del espacio */
+    flex-shrink: 0;
+    padding-right: 4px; /* Evita que el borde se corte en algunos navegadores */
+  }
+  .carousel-track:hover {
+    animation-play-state: paused;
+  }
+  @keyframes slide {
+    0%, 15% { transform: translateX(0%); }
+    20%, 35% { transform: translateX(-100%); }
+    40%, 55% { transform: translateX(-200%); }
+    60%, 75% { transform: translateX(-300%); }
+    80%, 95% { transform: translateX(-400%); }
+    100% { transform: translateX(0%); }
+  }
 </style>
 </head>
 <body class="bg-atmosphere relative">
@@ -145,40 +172,110 @@
             <div class="absolute bottom-6 left-6 right-6">
               <div class="font-mono text-xs uppercase tracking-widest text-white/60 mb-2">Consejero · Desarrollador · Escritor</div>
               <div class="font-display text-xl mb-4">FRASES_HISHIDA</div>
-              <a href="https://www.tiktok.com/@frases_hishida" target="_blank" class="block bg-black/40 border border-white/10 rounded-lg p-3 hover:bg-black/60 transition-colors mb-2">
-                <div class="flex items-center gap-1.5 mb-2">
-                  <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                  <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · TikTok</span>
-                </div>
-                <div class="grid grid-cols-3 gap-2 text-center">
+              
+              <!-- CARRUSEL CON IMÁGENES DE PERFIL -->
+              <div class="carousel-container">
+                <div class="carousel-track">
+                  
+                  <!-- Slide 1: TikTok -->
                   <div>
-                    <div id="followers-count" class="font-mono text-base font-bold text-white">...</div>
-                    <div class="text-[9px] text-white/50 uppercase tracking-wider">Seguidores</div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <img src="https://z-cdn-media.chatglm.cn/files/b7e4cc38-3166-40a8-8a03-435ad5fb2811.jpeg?auth_key=1887103865-c74e11b037f84a548f1940c060f135e7-0-e155425352c2ec3059fbaaec13c8192c" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="TikTok Profile">
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · TikTok</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
+                      <div><div id="tt-followers" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Seguidores</div></div>
+                      <div class="border-x border-white/10"><div id="tt-likes" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Me gusta</div></div>
+                      <div><div id="tt-videos" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Videos</div></div>
+                    </div>
                   </div>
-                  <div class="border-x border-white/10">
-                    <div id="likes-count" class="font-mono text-base font-bold text-white">...</div>
-                    <div class="text-[9px] text-white/50 uppercase tracking-wider">Me gusta</div>
-                  </div>
+
+                  <!-- Slide 2: YouTube -->
                   <div>
-                    <div id="videos-count" class="font-mono text-base font-bold text-white">...</div>
-                    <div class="text-[9px] text-white/50 uppercase tracking-wider">Videos</div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <img src="https://z-cdn-media.chatglm.cn/files/4845ddcd-184f-450b-a7dd-a4ac3f9259c7.jpeg?auth_key=1887103865-5f7d28978f7f4b88bfb47dc24fdd344e-0-ce3670f294273cced4141bf7b0f4f4b4" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="YouTube Profile">
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
+                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · YouTube</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
+                      <div><div id="yt-subs" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Suscriptores</div></div>
+                      <div class="border-l border-white/10"><div id="yt-vids" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Videos</div></div>
+                    </div>
                   </div>
+
+                  <!-- Slide 3: Instagram -->
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <img src="https://z-cdn-media.chatglm.cn/files/3b255c9b-3e27-4bbe-ba11-53c09f236e06.jpg?auth_key=1887103865-efd4595732184ddfb2b7c8eb3fe35e31-0-96e66fb204f19688536a82d8ff516e58" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="Instagram Profile">
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <div class="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse"></div>
+                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · Instagram</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
+                      <div><div id="ig-followers" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Seguidores</div></div>
+                      <div class="border-l border-white/10"><div id="ig-following" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Siguiendo</div></div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 4: Facebook -->
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <img src="https://z-cdn-media.chatglm.cn/files/aad076d8-927a-418d-a6b5-15ad421cdf93.jpeg?auth_key=1887103865-da632be4f555497aaab2481985e79919-0-13d5212ee6ebb9dcd163f4bdaffefe18" class="w-8 h-8 rounded-full object-cover border border-white/20" alt="Facebook Profile">
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
+                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">En vivo · Facebook</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
+                      <div><div id="fb-friends" class="font-mono text-base font-bold text-white">...</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Amigos / Seguidores</div></div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 5: Google Play -->
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.302 2.303-8.636-8.635z"/></svg>
+                      </div>
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                          <span class="text-[9px] font-mono uppercase tracking-widest text-white/60">Próximamente · Play Store</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-2 text-center bg-black/40 border border-white/10 rounded-lg p-3">
+                      <div><div class="font-mono text-base font-bold text-white">N/A</div><div class="text-[9px] text-white/50 uppercase tracking-wider">Apps en desarrollo</div></div>
+                    </div>
+                  </div>
+
                 </div>
-              </a>
-              <a href="https://www.youtube.com/@Frases_hishida" target="_blank" class="flex items-center justify-center gap-2 bg-black/40 border border-white/10 rounded-lg p-2 hover:bg-black/60 transition-colors text-xs font-mono text-white/80 hover:text-white">
-                <svg viewBox="0 0 24 24" class="svg-icon w-4 h-4"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                <span>YouTube</span>
-                <span class="text-white/50">· 500 subs</span>
-              </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Botones de Redes (Sin Correo) -->
     <div class="mt-16 reveal reveal-delay-3">
       <div class="text-xs font-mono uppercase tracking-widest text-white/40 mb-4">Conecta conmigo en</div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-[1200px]">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-[1100px]">
+        
         <a href="https://play.google.com" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.302 2.303-8.636-8.635z"/></svg></div>
@@ -186,24 +283,19 @@
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
+        
         <a href="https://www.tiktok.com/@frases_hishida" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.57 3.15-5.91 3.21-1.43.08-2.87-.29-4.09-1.06-2.03-1.27-3.35-3.58-3.29-6.03.05-2.41 1.45-4.7 3.41-5.77 1.21-.66 2.62-.95 4.03-.84v4.02c-.73-.25-1.54-.19-2.21.18-.63.35-1.11.96-1.31 1.65-.16.51-.11 1.06-.02 1.58.22 1.08 1.21 1.98 2.32 2.09 1.03.1 2.07-.44 2.6-1.31.2-.34.3-.73.36-1.12.06-1.79.02-3.57.03-5.36V.02h-.01z"/></svg></div>
-            <div><div class="font-display text-sm">TikTok</div><div class="text-[10px] text-white/50">19k seguidores</div></div>
+            <div><div class="font-display text-sm">TikTok</div><div id="btn-tt" class="text-[10px] text-white/50">Cargando...</div></div>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
+        
         <a href="https://www.youtube.com/@Frases_hishida" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
-            <div><div class="font-display text-sm">YouTube</div><div class="text-[10px] text-white/50">500 suscriptores</div></div>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
-        </a>
-        <a href="https://www.facebook.com/Hishida099" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
-            <div><div class="font-display text-sm">Facebook</div><div class="text-[10px] text-white/50">Hishida099</div></div>
+            <div><div class="font-display text-sm">YouTube</div><div id="btn-yt" class="text-[10px] text-white/50">Cargando...</div></div>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
@@ -211,18 +303,19 @@
         <a href="https://www.instagram.com/TU_USER_AQUI" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div>
-            <div><div class="font-display text-sm">Instagram</div><div class="text-[10px] text-white/50">Tu usuario</div></div>
+            <div><div class="font-display text-sm">Instagram</div><div id="btn-ig" class="text-[10px] text-white/50">Cargando...</div></div>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
 
-        <a href="mailto:fsapp.074@gmail.com" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
+        <a href="https://www.facebook.com/Hishida099" target="_blank" class="card-glass card-glow rounded-lg p-4 flex items-center justify-between group">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><i data-lucide="mail" class="w-5 h-5 text-white"></i></div>
-            <div><div class="font-display text-sm">Correo</div><div class="text-[10px] text-white/50">fsapp.074@gmail.com</div></div>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10"><svg viewBox="0 0 24 24" class="svg-icon"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+            <div><div class="font-display text-sm">Facebook</div><div id="btn-fb" class="text-[10px] text-white/50">Cargando...</div></div>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
         </a>
+
       </div>
     </div>
   </div>
@@ -383,15 +476,17 @@
     starField.appendChild(star);
   }
   
-  // === TIKTOK STATS: EXACTOS Y SIN REDONDEAR ===
+  // === FUNCIÓN DE FORMATO CORTO (K, M) ===
   function formatNumber(num) {
-    return Number(num).toLocaleString('es-ES');
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+    return num.toString();
   }
 
-  async function actualizarStatsReales(username = 'frases_hishida') {
-    const target = username.replace('@', '');
+  // === FETCH TIKTOK (VÍA CLOUDFLARE WORKER) ===
+  async function fetchTikTok() {
     try {
-      const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?user=${target}&_=${Date.now()}`;
+      const workerUrl = `https://green-tree-d7b8.nelsoncastellanojosegalindez.workers.dev/?user=frases_hishida&_=${Date.now()}`;
       const response = await fetch(workerUrl);
       const text = await response.text();
       
@@ -400,23 +495,81 @@
       const videoMatch = text.match(/"videoCount":(\d+)/);
       
       if (followerMatch && followerMatch[1]) {
-        document.getElementById("followers-count").innerText = formatNumber(parseInt(followerMatch[1]));
-        if (heartMatch) document.getElementById("likes-count").innerText = formatNumber(parseInt(heartMatch[1]));
-        if (videoMatch) document.getElementById("videos-count").innerText = formatNumber(parseInt(videoMatch[1]));
-      } else {
-        document.getElementById("followers-count").innerText = "...";
-        document.getElementById("likes-count").innerText = "...";
-        document.getElementById("videos-count").innerText = "...";
+        const f = parseInt(followerMatch[1]);
+        document.getElementById("tt-followers").innerText = formatNumber(f);
+        document.getElementById("btn-tt").innerText = formatNumber(f) + " seguidores";
       }
-    } catch (error) {
-      document.getElementById("followers-count").innerText = "...";
-      document.getElementById("likes-count").innerText = "...";
-      document.getElementById("videos-count").innerText = "...";
-    }
+      if (heartMatch) document.getElementById("tt-likes").innerText = formatNumber(parseInt(heartMatch[1]));
+      if (videoMatch) document.getElementById("tt-videos").innerText = formatNumber(parseInt(videoMatch[1]));
+    } catch (error) {}
   }
 
-  actualizarStatsReales('frases_hishida');
-  setInterval(() => actualizarStatsReales('frases_hishida'), 60000);
+  // === FETCH YOUTUBE (VÍA PROXY PÚBLICO) ===
+  async function fetchYouTube() {
+    try {
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.youtube.com/@Frases_hishida')}`;
+      const response = await fetch(proxyUrl);
+      const html = await response.text();
+      
+      const subMatch = html.match(/"subscriberCountText":\{"simpleText":"(.*?)"/);
+      const vidMatch = html.match(/"videosCountText":\{"simpleText":"(.*?)"/);
+      
+      if (subMatch && subMatch[1]) {
+        let subs = subMatch[1].replace(/\D/g, '');
+        document.getElementById("yt-subs").innerText = formatNumber(parseInt(subs));
+        document.getElementById("btn-yt").innerText = formatNumber(parseInt(subs)) + " suscriptores";
+      }
+      if (vidMatch) document.getElementById("yt-vids").innerText = vidMatch[1].replace(/\D/g, '');
+    } catch (error) {}
+  }
+
+  // === FETCH INSTAGRAM (VÍA PROXY PÚBLICO) ===
+  async function fetchInstagram() {
+    try {
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.instagram.com/TU_USER_AQUI/')}`;
+      const response = await fetch(proxyUrl);
+      const html = await response.text();
+      
+      const followerMatch = html.match(/"edge_followed_by":\{"count":(\d+)/);
+      const followingMatch = html.match(/"edge_follow":\{"count":(\d+)/);
+      
+      if (followerMatch && followerMatch[1]) {
+        document.getElementById("ig-followers").innerText = formatNumber(parseInt(followerMatch[1]));
+        document.getElementById("btn-ig").innerText = formatNumber(parseInt(followerMatch[1])) + " seguidores";
+      }
+      if (followingMatch) document.getElementById("ig-following").innerText = formatNumber(parseInt(followingMatch[1]));
+    } catch (error) {}
+  }
+
+  // === FETCH FACEBOOK (VÍA PROXY PÚBLICO) ===
+  async function fetchFacebook() {
+    try {
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.facebook.com/Hishida099')}`;
+      const response = await fetch(proxyUrl);
+      const html = await response.text();
+      
+      const friendMatch = html.match(/"friend_count":(\d+)/) || html.match(/"follower_count":(\d+)/);
+      
+      if (friendMatch && friendMatch[1]) {
+        document.getElementById("fb-friends").innerText = formatNumber(parseInt(friendMatch[1]));
+        document.getElementById("btn-fb").innerText = formatNumber(parseInt(friendMatch[1])) + " seguidores";
+      }
+    } catch (error) {}
+  }
+
+  // Ejecutar todas las funciones
+  fetchTikTok();
+  fetchYouTube();
+  fetchInstagram();
+  fetchFacebook();
+
+  // Actualizar cada 1 minuto
+  setInterval(() => {
+    fetchTikTok();
+    fetchYouTube();
+    fetchInstagram();
+    fetchFacebook();
+  }, 60000);
 </script>
 </body>
 </html>
